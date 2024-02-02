@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants;   
 
 
 public class DriveSubsystem extends SubsystemBase {
@@ -19,7 +19,6 @@ public class DriveSubsystem extends SubsystemBase {
   public CANVenom fr;
   public CANVenom bl;
   public CANVenom br;
-
   public DifferentialDrive diffDrive;
 
   public DriveSubsystem() {
@@ -83,6 +82,10 @@ public class DriveSubsystem extends SubsystemBase {
     return new Double[]{fl.getSpeed(), fr.getSpeed(), bl.getSpeed(), br.getSpeed()};
   }
 
+  public Double[] getTemperature(){
+    return new Double[]{fl.getTemperature(), fr.getTemperature(), bl.getTemperature(), br.getTemperature()};
+  }
+
   public void resetEncoders(){
     fl.resetPosition();
     bl.resetPosition();
@@ -100,16 +103,28 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // SmartDashboard
     Double[] positions = getPosition();
-    SmartDashboard.putNumber("FL Positions", positions[0]);
-    SmartDashboard.putNumber("FR Positions", positions[1]);
-    SmartDashboard.putNumber("BL Positions", positions[2]);
-    SmartDashboard.putNumber("BR Positions", positions[3]);
-
     Double[] speeds = getSpeed();
+    Double[] temperatures = getTemperature();
+
+    // Front Left
+    SmartDashboard.putNumber("FL Position", positions[0]);
     SmartDashboard.putNumber("FL Speed", speeds[0]);
+    SmartDashboard.putNumber("FL Temperature", temperatures[0]);
+
+    // Front Right
+    SmartDashboard.putNumber("FR Position", positions[1]);
     SmartDashboard.putNumber("FR Speed", speeds[1]);
+    SmartDashboard.putNumber("FR Temperature", temperatures[1]);
+    
+    // Back Left
+    SmartDashboard.putNumber("BL Position", positions[2]);
     SmartDashboard.putNumber("BL Speed", speeds[2]);
+    SmartDashboard.putNumber("BL Temperature", temperatures[2]);
+
+    // Back Right
+    SmartDashboard.putNumber("BR Position", positions[3]);
     SmartDashboard.putNumber("BR Speed", speeds[3]);
+    SmartDashboard.putNumber("BR Temperature", temperatures[3]);
 
   }
 

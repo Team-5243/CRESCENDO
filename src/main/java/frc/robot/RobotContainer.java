@@ -5,7 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.Autos;
+import frc.robot.commands.AutonCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -23,6 +23,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Autos.exampleAuto(m_driveSubsystem);
+    return AutonCommand.exampleAuto(m_driveSubsystem);
   }
 }

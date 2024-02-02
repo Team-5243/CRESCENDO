@@ -4,30 +4,22 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 
 public class RobotContainer {
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final DriveCommand m_driveCommand = new DriveCommand(m_driveSubsystem);
 
   public RobotContainer() {
-    configureBindings();
+    m_driveSubsystem.setDefaultCommand(m_driveCommand);
   }
 
   private void configureBindings() {
-    new Trigger(m_driveSubsystem::exampleCondition)
-        .onTrue(new DriveCommand(m_driveSubsystem));
-
-    m_driverController.b().whileTrue(m_driveSubsystem.driveMethodCommand());
+    
   }
 
   public Command getAutonomousCommand() {

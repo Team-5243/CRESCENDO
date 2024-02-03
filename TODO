@@ -1,0 +1,15 @@
+Easy
+- Install NAVX (https://dev.studica.com/releases/2024/NavX.json)
+- Use NAVX in Drive Command
+- Use Limit Switches
+- First Person Camera on SmartDashboard
+
+Medium
+- PID
+- Limits
+
+Hard
+- Pathing with PathWeaver
+- Auto Aim Shooting
+- Field 2d Top Down View on SmartDashboard
+- April Tags with LimeLight

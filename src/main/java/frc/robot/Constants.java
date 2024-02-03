@@ -22,6 +22,8 @@ public final class Constants {
 
   // Others
   public static double trackWidthMeters = 0;
+  public static double maxSpeed = 0;
+  public static double maxAcceleration = 0;
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;

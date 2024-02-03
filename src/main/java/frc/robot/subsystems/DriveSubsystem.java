@@ -94,11 +94,6 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 
-  // Example Boolean
-  public boolean exampleCondition(){
-    return false;
-  }
-
   @Override
   public void periodic() {
     // SmartDashboard
@@ -126,10 +121,5 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("BR Speed", speeds[3]);
     SmartDashboard.putNumber("BR Temperature", temperatures[3]);
 
-  }
-
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
   }
 }

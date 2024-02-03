@@ -23,6 +23,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return AutonCommand.exampleAuto(m_driveSubsystem);
+    return AutonCommand.mainAuton(m_driveSubsystem);
   }
 }

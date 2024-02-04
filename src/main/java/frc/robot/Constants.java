@@ -20,10 +20,14 @@ public final class Constants {
   public static double ki = 0;
   public static double kp = 0;
 
-  // Others
-  public static double trackWidthMeters = 0;
+  // Drive
+  public static double wheelCircumference = 6;
+  public static double drivetrainGearRatio = 6;
+  public static double wheelSeperationDistance = 12;
+  
   public static double maxSpeed = 0;
   public static double maxAcceleration = 0;
+  public static double mass = 0;
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;

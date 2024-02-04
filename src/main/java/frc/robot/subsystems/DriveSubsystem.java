@@ -5,6 +5,11 @@
 package frc.robot.subsystems;
 
 import com.playingwithfusion.CANVenom;
+
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +25,8 @@ public class DriveSubsystem extends SubsystemBase {
   public CANVenom bl;
   public CANVenom br;
   public DifferentialDrive diffDrive;
+  public AHRS gyro;
+  public Pose2d estimatedPose;
 
   public DriveSubsystem() {
     // Create CANVenoms
@@ -27,6 +34,9 @@ public class DriveSubsystem extends SubsystemBase {
     fr = new CANVenom(Constants.FR);
     bl = new CANVenom(Constants.BL);
     br = new CANVenom(Constants.BR);
+
+    // Create Pose
+    estimatedPose = new Pose2d();
     
     // Set CANVenom to Follow Mode
     bl.follow(fl);
@@ -70,6 +80,24 @@ public class DriveSubsystem extends SubsystemBase {
     fr.setBrakeCoastMode(CANVenom.BrakeCoastMode.Brake);
     bl.setBrakeCoastMode(CANVenom.BrakeCoastMode.Brake);
     br.setBrakeCoastMode(CANVenom.BrakeCoastMode.Brake);
+  }
+
+
+  // Gyro
+  public AHRS getGyro(){
+    return gyro;
+  }
+
+  
+  // Pose Estimation
+  public Pose2d getPose(){
+    return estimatedPose;
+  }
+
+  
+  // Displacement (Get Position might not return what we expect)
+  public double getLeftDisplacement(){
+    return fl.getPosition() / (Constants.wheelCircumference * Constants.drivetrainGearRatio);
   }
 
 
@@ -121,5 +149,10 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("BR Speed", speeds[3]);
     SmartDashboard.putNumber("BR Temperature", temperatures[3]);
 
+    // Pose Estimation (GET SPEED RETURNS RPM NOT VELOCITY, CONVERT TO VELOCITY)
+    double leftVelocity = fl.getSpeed()/(Constants.wheelCircumference * Constants.drivetrainGearRatio);
+    double rightVelocity = fr.getSpeed()/(Constants.wheelCircumference * Constants.drivetrainGearRatio);
+    Pose2d poseChange = new Pose2d(new Translation2d(-(leftVelocity + rightVelocity) / 2d, 0d), new Rotation2d((leftVelocity - rightVelocity) / (2d * Constants.wheelSeperationDistance)));
+    estimatedPose.minus(poseChange);
   }
 }

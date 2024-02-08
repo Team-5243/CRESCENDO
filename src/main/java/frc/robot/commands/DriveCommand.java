@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 
 
@@ -24,7 +25,7 @@ public class DriveCommand extends Command {
 
   @Override
   public void execute() {
-    m_driveSubsystem.arcadeDrive(1, 0);
+    m_driveSubsystem.arcadeDrive(Constants.mainStick.getX(), Constants.mainStick.getY());
   }
 
 

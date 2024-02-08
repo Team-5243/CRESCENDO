@@ -150,9 +150,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("BR Temperature", temperatures[3]);
 
     // Pose Estimation (GET SPEED RETURNS RPM NOT VELOCITY, CONVERT TO VELOCITY)
-    double leftVelocity = fl.getSpeed()/(Constants.wheelCircumference * Constants.drivetrainGearRatio);
-    double rightVelocity = fr.getSpeed()/(Constants.wheelCircumference * Constants.drivetrainGearRatio);
-    Pose2d poseChange = new Pose2d(new Translation2d(-(leftVelocity + rightVelocity) / 2d, 0d), new Rotation2d((leftVelocity - rightVelocity) / (2d * Constants.wheelSeperationDistance)));
-    estimatedPose.minus(poseChange);
+    // double leftVelocity = fl.getSpeed()/(Constants.wheelCircumference * Constants.drivetrainGearRatio);
+    // double rightVelocity = fr.getSpeed()/(Constants.wheelCircumference * Constants.drivetrainGearRatio);
+    // Pose2d poseChange = new Pose2d(new Translation2d(-(leftVelocity + rightVelocity) / 2d, 0d), new Rotation2d((leftVelocity - rightVelocity) / (2d * Constants.wheelSeperationDistance)));
+    // estimatedPose.minus(poseChange);
   }
 }

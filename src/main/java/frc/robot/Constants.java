@@ -5,10 +5,10 @@ import edu.wpi.first.wpilibj.Joystick;
 public final class Constants {
 
   // CANVenom CAN IDS
-  public static int FL = 1;
-  public static int FR = 4;
-  public static int BL = 2;
-  public static int BR = 3;
+  public static int FL = 4;
+  public static int FR = 1;
+  public static int BL = 3;
+  public static int BR = 2;
 
   // Joysticks
   public static Joystick mainStick = new Joystick(0);

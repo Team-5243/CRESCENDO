@@ -10,6 +10,10 @@ public final class Constants {
   public static int BL = 3;
   public static int BR = 2;
 
+  // CANSparkMax
+  public static int Out1 = 1;
+  public static int Out2 = 2;
+
   // Joysticks
   public static Joystick mainStick = new Joystick(0);
   public static Joystick secondStick = new Joystick(1);

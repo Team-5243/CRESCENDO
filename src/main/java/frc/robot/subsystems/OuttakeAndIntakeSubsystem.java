@@ -107,23 +107,12 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
       rightOuttakeMotor.set(-speed);
     }
 
-    public boolean atLaunchSpeed(){
+    public boolean canShoot(){
       Double[] speeds = getOuttakeSpeed();
       if (Math.abs(speeds[0]) >= Constants.neoLaunchRPM && Math.abs(speeds[1]) >= Constants.neoLaunchRPM){
           return true;
       }
       return false;
-    }
-
-    public boolean hasDisk(){
-        // return true if disk loaded
-        // return false if not
-        // uses limit switch?
-        return true;
-    }
-
-    public boolean canShoot(){
-        return (atLaunchSpeed() && hasDisk());
     }
 
     // Shoot

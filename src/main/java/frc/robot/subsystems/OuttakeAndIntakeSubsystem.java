@@ -107,12 +107,17 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
       rightOuttakeMotor.set(-speed);
     }
 
-    public boolean canShoot(){
+    public boolean atLaunchRPM(){
       Double[] speeds = getOuttakeSpeed();
       if (Math.abs(speeds[0]) >= Constants.neoLaunchRPM && Math.abs(speeds[1]) >= Constants.neoLaunchRPM){
           return true;
       }
       return false;
+    }
+
+    public boolean canShoot(){
+      // change true to if the arm is aligned with outtake
+      return (atLaunchRPM() && true);
     }
 
     // Shoot

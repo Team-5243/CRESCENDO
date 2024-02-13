@@ -21,7 +21,6 @@ public class DriveCommand extends Command {
 
   @Override
   public void initialize() {
-    //m_driveSubsystem.setCoastMode();
   }
 
 

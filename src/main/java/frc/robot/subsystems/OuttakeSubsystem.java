@@ -41,25 +41,45 @@ public class OuttakeSubsystem extends SubsystemBase {
       throughBoreEncoder.reset();
     }
 
-    // Motors Get
-    public Double[] getSpeed(){
-        return new Double[] {leftMotor.get(), rightMotor.get()};
-    }
-
-    // Motors Shoot
+    // Motors Helper Functions
     public void resetMotor(){
         leftMotor.clearFaults();
         rightMotor.clearFaults();
     }
 
-    public void speedUp(){
-        leftMotor.set(.6);
-        rightMotor.set(.6);
+    public Double[] getSpeed(){
+        return new Double[] {leftMotor.get(), rightMotor.get()};
     }
 
-    public void launchDisk(){
+    public void setSpeed(double speed){
+        leftMotor.set(speed);
+        rightMotor.set(speed);
+    }
+
+    // Shoot Checks
+    public boolean atLaunchSpeed(){
         Double[] speeds = getSpeed();
-        if (Math.abs(speeds[0]) > 0.58 && Math.abs(speeds[1]) > 0.58){
+        if (Math.abs(speeds[0]) >= Constants.neoLaunchRPM && Math.abs(speeds[1]) >= Constants.neoLaunchRPM){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasDisk(){
+        // return true if disk loaded
+        // return false if not
+        // uses limit switch?
+        return true;
+    }
+
+    public boolean canShoot(){
+        return (atLaunchSpeed() && hasDisk());
+    }
+
+
+    // Shoot Disk
+    public void shoot(){
+        if(canShoot()){
             pushDisk();
         }
     }
@@ -73,6 +93,7 @@ public class OuttakeSubsystem extends SubsystemBase {
     public void periodic() {
       // SmartDashboard
       SmartDashboard.putNumber("Distance by Bore Encoder", getDistance());
+      SmartDashboard.putBoolean("Ready to Shoot", canShoot());
     }
 }
 

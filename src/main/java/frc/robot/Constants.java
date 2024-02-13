@@ -29,9 +29,9 @@ public final class Constants {
   public static double ki = 0;
   public static double kp = 0;
 
-  // Drive
-  public static double wheelCircumference = 6;
-  public static double drivetrainGearRatio = 6;
+  // Drive (Meters)
+  public static double wheelCircumference = 0.478779;
+  public static double drivetrainGearRatio = 8.46;
   public static double wheelSeperationDistance = 12;
   
   public static double maxSpeed = 0;

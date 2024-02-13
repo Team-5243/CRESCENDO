@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -27,6 +28,7 @@ public class DriveSubsystem extends SubsystemBase {
   public DifferentialDrive diffDrive;
   public AHRS gyro;
   public Pose2d estimatedPose;
+  public Field2d pose;
 
   public DriveSubsystem() {
     // Create CANVenoms
@@ -37,6 +39,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Create Pose
     estimatedPose = new Pose2d();
+    pose = new Field2d();
     
     // Set CANVenom to Follow Mode
     bl.follow(fl);
@@ -149,10 +152,13 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("BR Speed", speeds[3]);
     SmartDashboard.putNumber("BR Temperature", temperatures[3]);
 
-    // Pose Estimation (GET SPEED RETURNS RPM NOT VELOCITY, CONVERT TO VELOCITY)
-    // double leftVelocity = fl.getSpeed()/(Constants.wheelCircumference * Constants.drivetrainGearRatio);
-    // double rightVelocity = fr.getSpeed()/(Constants.wheelCircumference * Constants.drivetrainGearRatio);
-    // Pose2d poseChange = new Pose2d(new Translation2d(-(leftVelocity + rightVelocity) / 2d, 0d), new Rotation2d((leftVelocity - rightVelocity) / (2d * Constants.wheelSeperationDistance)));
-    // estimatedPose.minus(poseChange);
+    // Pose Estimation
+    double leftVelocity = (fl.getSpeed())/(Constants.wheelCircumference * Constants.drivetrainGearRatio);
+    double rightVelocity = (fr.getSpeed())/(Constants.wheelCircumference * Constants.drivetrainGearRatio);
+    Pose2d poseChange = new Pose2d(new Translation2d(-(leftVelocity + rightVelocity) / 2d, 0d), new Rotation2d((leftVelocity - rightVelocity) / (2d * Constants.wheelSeperationDistance)));
+    estimatedPose.minus(poseChange);
+
+    pose.setRobotPose(estimatedPose);
+    SmartDashboard.putData(pose);
   }
 }

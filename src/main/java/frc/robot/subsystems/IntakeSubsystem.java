@@ -27,6 +27,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
         // Reset Encoders
         resetEncoders();
+
+        // Reset Motor
+        resetMotor();
     }
 
     // Encoders
@@ -66,6 +69,6 @@ public class IntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
       // SmartDashboard
-      SmartDashboard.putNumber("Distance by Bore Encoder", getDistance());
+      SmartDashboard.putNumber("Intake Bore Encoder", getDistance());
     }
 }

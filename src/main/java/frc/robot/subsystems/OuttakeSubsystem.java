@@ -92,7 +92,7 @@ public class OuttakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
       // SmartDashboard
-      SmartDashboard.putNumber("Distance by Bore Encoder", getDistance());
+      SmartDashboard.putNumber("Outtake Bore Encoder", getDistance());
       SmartDashboard.putBoolean("Ready to Shoot", canShoot());
     }
 }

@@ -23,6 +23,11 @@ public final class Constants {
   public static Joystick mainStick = new Joystick(0);
   public static Joystick secondStick = new Joystick(1);
 
+  // Arm 
+  // set 12345 to the angle that the arm should be at when aligned with outtake/intake
+  public static double armOuttakeAngle = 12345;
+  public static double armIntakeAngle = 12345;
+
   // PID
   public static double kd = 0;
   public static double kf = 0;

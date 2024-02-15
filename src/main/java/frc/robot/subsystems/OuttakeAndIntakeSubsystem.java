@@ -17,13 +17,11 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     DutyCycleEncoder throughBoreEncoder;
     CANSparkMax intakeMotor;
     CANSparkMax armMotor;
-    DigitalInput alignedWithIntake;
 
 
     // Outtake
     CANSparkMax leftOuttakeMotor;
     CANSparkMax rightOuttakeMotor;
-    DigitalInput alignedWithOutake;
 
     public OuttakeAndIntakeSubsystem() {
         // Intake
@@ -31,18 +29,16 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
         throughBoreEncoder = new DutyCycleEncoder(throughBoreInput);
         intakeMotor = new CANSparkMax(Constants.In1,  MotorType.kBrushless);
         armMotor = new CANSparkMax(Constants.In2,  MotorType.kBrushless);
-        alignedWithIntake = new DigitalInput(1);
 
         // Outtake
         leftOuttakeMotor = new CANSparkMax(Constants.Out1, MotorType.kBrushless);
         rightOuttakeMotor = new CANSparkMax(Constants.Out2,  MotorType.kBrushless);
-        alignedWithOutake = new DigitalInput(2);
 
         // Reset Encoders
         resetEncoders();
 
         // Reset Motor
-        resetMotor();
+        resetMotors();
     }
 
     // Encoders
@@ -55,7 +51,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     // Motors Helper Functions
-    public void resetMotor(){
+    public void resetMotors(){
         intakeMotor.clearFaults();
         armMotor.clearFaults();
         leftOuttakeMotor.clearFaults();
@@ -63,7 +59,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
 
-    // Intake
+    // Accessor Methods
     public double getIntakeSpeed(){
         return intakeMotor.get();
     }
@@ -72,6 +68,12 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
         return armMotor.get();
     }
 
+    public Double[] getOuttakeSpeed(){
+      return new Double[] {leftOuttakeMotor.get(), rightOuttakeMotor.get()};
+    }
+
+
+    // Set Speeds
     public void setIntakeSpeed(double speed){
         intakeMotor.set(speed);
     }
@@ -80,33 +82,43 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
         armMotor.set(speed);
     }
 
-    public void intakeRing(){
-      setIntakeSpeed(1);
-    }
-
-    public void outputRing(){
-      setIntakeSpeed(-0.3);
-    }
-
-    // Move Arm
-    public void moveArmToOuttake(){
-      // if limit switch not touched
-    }
-
-    public void moveArmToIntake(){
-      // if limit switch not touched
-    }
-
-    // Outtake
-    public Double[] getOuttakeSpeed(){
-      return new Double[] {leftOuttakeMotor.get(), rightOuttakeMotor.get()};
-    }
-
     public void setOuttakeSpeed(double speed){
       leftOuttakeMotor.set(speed);
       rightOuttakeMotor.set(-speed);
     }
 
+
+    // Change Intake Speed
+    public void intakeRing(){
+      setIntakeSpeed(1);
+    }
+
+    public void pushRingToOuttake(){
+      setIntakeSpeed(-0.3);
+    }
+
+
+    // Move Arm
+    public void moveArmToOuttake(){
+      // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
+      while(throughBoreEncoder.getAbsolutePosition() < 30){
+        setArmSpeed(-.1);
+      }
+    }
+
+    public void moveArmToIntake(){
+      // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
+      while(throughBoreEncoder.getAbsolutePosition() < 30){
+        setArmSpeed(-.1);
+      }
+    }
+
+    public void shootRing(){
+        pushRingToOuttake();
+    }
+
+
+    // Outtake Launch Conditionals
     public boolean atLaunchRPM(){
       Double[] speeds = getOuttakeSpeed();
       if (Math.abs(speeds[0]) >= Constants.neoLaunchRPM && Math.abs(speeds[1]) >= Constants.neoLaunchRPM){
@@ -116,17 +128,10 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     public boolean canShoot(){
-      // change true to if the arm is aligned with outtake
+      // return (throughBoreEncoder.getAbsolutePosition() == Constants.ArmOuttakeAngle) ? true : false;
       return (atLaunchRPM() && true);
     }
 
-    // Shoot
-    public void shootRing(){
-      if (canShoot()){
-        outputRing();
-        setOuttakeSpeed(1);
-      }
-    }
 
     @Override
     public void periodic() {

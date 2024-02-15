@@ -22,12 +22,43 @@ public class OuttakeAndIntakeCommand extends Command {
 
   @Override
   public void execute() {
-    if (Constants.secondStick.getTrigger() == true){
+
+    // MAPPING
+    // Trigger = Shoot
+    // Side Button = Speed Up Outtake (Allow Shoot at Any Speed, But Set Popup in Dashboard to Display if AT OPTIMAL SPEED)
+    // 
+
+
+
+
+    // If Trigger Pressed
+    // Shoot Ring
+    if (Constants.secondStick.getTrigger()){
+        m_outtakeAndIntakeSubsystem.shootRing();
+    }
+
+    // If Side Button Pressed
+    // Set Outtake Speed to 1
+    if (Constants.secondStick.getRawButton(1)){
+        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(1);
+    }
+
+    // If Button #3 (Left Bottom) Pressed
+    // Spin Intake to Take in Ring
+    if (Constants.secondStick.getRawButton(2)){
         m_outtakeAndIntakeSubsystem.intakeRing();
     }
-    m_outtakeAndIntakeSubsystem.setOuttakeSpeed(0.6);
-    if (Constants.secondStick.getRawButton(2) && m_outtakeAndIntakeSubsystem.canShoot()){
-        m_outtakeAndIntakeSubsystem.shootRing();
+
+    // If Button #4 (Right Bottom) Pressed
+    // Align Arm with Intake
+    if (Constants.secondStick.getRawButton(3)){
+        m_outtakeAndIntakeSubsystem.moveArmToIntake();
+    }
+
+    // If Button #6 (Right Top) Pressed
+    // Align Arm with Outtake
+    if(Constants.secondStick.getRawButton(5)){
+        m_outtakeAndIntakeSubsystem.moveArmToOuttake();
     }
   }
 

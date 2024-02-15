@@ -16,7 +16,14 @@ Hard
 
 
 
-IDEAS
+AUTOMATION
 - Add Limit Switches to detect if a ring is in the intake
-    - auto align intake with outtake
-    - when ring is shot (no more ring touching limit switch on intake) flip arm back 
+- when ring in intake, auto align intake with outtake
+- when ring is shot (no more ring touching limit switch on intake) flip arm back to align with ground
+
+
+AUTOAIM
+- get distance to speaker
+- calculate distance from outtake to speaker
+- determine angle of attack
+- set outtake to angle of attack

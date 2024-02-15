@@ -37,7 +37,7 @@ public final class Constants {
   // Drive (Meters)
   public static double wheelCircumference = 0.478779;
   public static double drivetrainGearRatio = 8.46;
-  public static double wheelSeperationDistance = 12;
+  public static double trackWidth = 12;
   
   public static double maxSpeed = 0;
   public static double maxAcceleration = 0;

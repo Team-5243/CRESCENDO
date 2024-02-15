@@ -7,9 +7,15 @@ package frc.robot.subsystems;
 import com.playingwithfusion.CANVenom;
 
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,8 +33,10 @@ public class DriveSubsystem extends SubsystemBase {
   public CANVenom br;
   public DifferentialDrive diffDrive;
   public AHRS gyro;
-  public Pose2d estimatedPose;
-  public Field2d pose;
+  
+  public DifferentialDrivePoseEstimator drivePoseEstimator;
+  public DifferentialDriveKinematics driveKinematics;
+
 
   public DriveSubsystem() {
     // Create CANVenoms
@@ -37,10 +45,6 @@ public class DriveSubsystem extends SubsystemBase {
     bl = new CANVenom(Constants.BL);
     br = new CANVenom(Constants.BR);
 
-    // Create Pose
-    estimatedPose = new Pose2d();
-    pose = new Field2d();
-    
     // Set CANVenom to Follow Mode
     bl.follow(fl);
     br.follow(fr);
@@ -53,6 +57,14 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Reset Encoders
     resetEncoders();
+
+    // Create Drive Kinematics
+    driveKinematics = new DifferentialDriveKinematics(Constants.trackWidth);
+
+    // Create Diff Drive Pose Estimator
+    drivePoseEstimator = new DifferentialDrivePoseEstimator(driveKinematics, new Rotation2d(gyro.getAngle()), 
+      getMeters(fl), getMeters(fr), new Pose2d());
+
   }
   
 
@@ -91,16 +103,11 @@ public class DriveSubsystem extends SubsystemBase {
     return gyro;
   }
 
-  
-  // Pose Estimation
-  public Pose2d getPose(){
-    return estimatedPose;
-  }
 
-  
-  // Displacement (Get Position might not return what we expect)
-  public double getLeftDisplacement(){
-    return fl.getPosition() / (Constants.wheelCircumference * Constants.drivetrainGearRatio);
+  // Motor Meters Traveled
+  public double getMeters(CANVenom motor){
+    return motor.getPosition() / (Constants.wheelCircumference * Constants.drivetrainGearRatio);
+
   }
 
 
@@ -153,12 +160,6 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("BR Temperature", temperatures[3]);
 
     // Pose Estimation
-    double leftVelocity = (fl.getSpeed())/(Constants.wheelCircumference * Constants.drivetrainGearRatio);
-    double rightVelocity = (fr.getSpeed())/(Constants.wheelCircumference * Constants.drivetrainGearRatio);
-    Pose2d poseChange = new Pose2d(new Translation2d(-(leftVelocity + rightVelocity) / 2d, 0d), new Rotation2d((leftVelocity - rightVelocity) / (2d * Constants.wheelSeperationDistance)));
-    estimatedPose.minus(poseChange);
-
-    pose.setRobotPose(estimatedPose);
-    SmartDashboard.putData(pose);
+    drivePoseEstimator.update(new Rotation2d(gyro.getAngle()), getMeters(fl), getMeters(fr));
   }
 }

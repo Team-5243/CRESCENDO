@@ -29,6 +29,4 @@ public class VisionSubsystem extends SubsystemBase{
         SmartDashboard.putNumber("April Tag Y", y);
         SmartDashboard.putNumber("April Tag Area", a);
     }
-
-    
 }

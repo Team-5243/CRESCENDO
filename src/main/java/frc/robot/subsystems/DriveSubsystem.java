@@ -161,5 +161,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Pose Estimation
     drivePoseEstimator.update(new Rotation2d(gyro.getAngle()), getMeters(fl), getMeters(fr));
+    // drivePoseEstimator.addVisionMeasurement(null, 0);
   }
 }

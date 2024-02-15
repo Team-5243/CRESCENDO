@@ -23,14 +23,6 @@ public class OuttakeAndIntakeCommand extends Command {
   @Override
   public void execute() {
 
-    // MAPPING
-    // Trigger = Shoot
-    // Side Button = Speed Up Outtake (Allow Shoot at Any Speed, But Set Popup in Dashboard to Display if AT OPTIMAL SPEED)
-    // 
-
-
-
-
     // If Trigger Pressed
     // Shoot Ring
     if (Constants.secondStick.getTrigger()){

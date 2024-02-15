@@ -13,3 +13,10 @@ Hard
 - Auto Aim Shooting
 - Field 2d Top Down View on SmartDashboard
 - April Tags with LimeLight
+
+
+
+IDEAS
+- Add Limit Switches to detect if a ring is in the intake
+    - auto align intake with outtake
+    - when ring is shot (no more ring touching limit switch on intake) flip arm back 

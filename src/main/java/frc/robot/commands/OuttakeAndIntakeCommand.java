@@ -34,6 +34,9 @@ public class OuttakeAndIntakeCommand extends Command {
     if (Constants.secondStick.getRawButton(1)){
         m_outtakeAndIntakeSubsystem.setOuttakeSpeed(1);
     }
+    else {
+        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(0);
+    }
 
     // If Button #3 (Left Bottom) Pressed
     // Spin Intake to Take in Ring

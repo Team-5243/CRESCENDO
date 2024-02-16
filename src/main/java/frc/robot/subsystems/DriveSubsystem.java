@@ -58,6 +58,9 @@ public class DriveSubsystem extends SubsystemBase {
     // Reset Encoders
     resetEncoders();
 
+    // Create Gyro
+    gyro = new AHRS();
+
     // Create Drive Kinematics
     driveKinematics = new DifferentialDriveKinematics(Constants.trackWidth);
 

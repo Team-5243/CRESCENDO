@@ -44,17 +44,17 @@ public class OuttakeAndIntakeCommand extends Command {
         m_outtakeAndIntakeSubsystem.intakeRing();
     }
 
-    // If Button #4 (Right Bottom) Pressed
-    // Align Arm with Intake
-    if (Constants.secondStick.getRawButton(3)){
-        m_outtakeAndIntakeSubsystem.moveArmToIntake();
-    }
+    // // If Button #4 (Right Bottom) Pressed
+    // // Align Arm with Intake
+    // if (Constants.secondStick.getRawButton(3)){
+    //     m_outtakeAndIntakeSubsystem.moveArmToIntake();
+    // }
 
-    // If Button #6 (Right Top) Pressed
-    // Align Arm with Outtake
-    if(Constants.secondStick.getRawButton(5)){
-        m_outtakeAndIntakeSubsystem.moveArmToOuttake();
-    }
+    // // If Button #6 (Right Top) Pressed
+    // // Align Arm with Outtake
+    // if(Constants.secondStick.getRawButton(5)){
+    //     m_outtakeAndIntakeSubsystem.moveArmToOuttake();
+    // }
   }
 
 

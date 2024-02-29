@@ -107,19 +107,19 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
 
     // Move Arm
-    public void moveArmToOuttake(){
-      // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
-      while(throughBoreEncoder.getAbsolutePosition() < 30){
-        setArmSpeed(-.1);
-      }
-    }
+    // public void moveArmToOuttake(){
+    //   // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
+    //   while(throughBoreEncoder.getAbsolutePosition() < 30){
+    //     setArmSpeed(-.1);
+    //   }
+    // }
 
-    public void moveArmToIntake(){
-      // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
-      while(throughBoreEncoder.getAbsolutePosition() < 30){
-        setArmSpeed(-.1);
-      }
-    }
+    // public void moveArmToIntake(){
+    //   // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
+    //   while(throughBoreEncoder.getAbsolutePosition() < 30){
+    //     setArmSpeed(-.1);
+    //   }
+    // }
 
     public void shootRing(){
         pushRingToOuttake();

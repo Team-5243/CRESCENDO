@@ -13,8 +13,10 @@ import frc.robot.Constants;
 public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     // Intake
-    DigitalInput throughBoreInput;
-    DutyCycleEncoder throughBoreEncoder;
+    DigitalInput throughBoreInputLeft;
+    DutyCycleEncoder throughBoreEncoderLeft;
+    DigitalInput throughBoreInputRight;
+    DutyCycleEncoder throughBoreEncoderRight;
     CANSparkMax intakeMotor;
     CANSparkMax armMotor;
 
@@ -25,12 +27,17 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     public OuttakeAndIntakeSubsystem() {
         // Intake
-        throughBoreInput = new DigitalInput(0);
-        throughBoreEncoder = new DutyCycleEncoder(throughBoreInput);
+        // throughBoreInput = new DigitalInput(0);
+        // throughBoreEncoder = new DutyCycleEncoder(throughBoreInput);
         intakeMotor = new CANSparkMax(Constants.In1,  MotorType.kBrushless);
         armMotor = new CANSparkMax(Constants.In2,  MotorType.kBrushless);
 
         // Outtake
+        throughBoreInputLeft = new DigitalInput(0);
+        throughBoreEncoderLeft = new DutyCycleEncoder(throughBoreInput);
+
+        throughBoreInputRight = new DigitalInput(0);
+        throughBoreEncoderRight = new DutyCycleEncoder(throughBoreInput);
         leftOuttakeMotor = new CANSparkMax(Constants.Out1, MotorType.kBrushless);
         rightOuttakeMotor = new CANSparkMax(Constants.Out2,  MotorType.kBrushless);
 

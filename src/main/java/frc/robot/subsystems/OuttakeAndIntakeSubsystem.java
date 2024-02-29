@@ -34,10 +34,10 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
         // Outtake
         throughBoreInputLeft = new DigitalInput(0);
-        throughBoreEncoderLeft = new DutyCycleEncoder(throughBoreInput);
+        throughBoreEncoderLeft = new DutyCycleEncoder(throughBoreInputLeft);
 
         throughBoreInputRight = new DigitalInput(0);
-        throughBoreEncoderRight = new DutyCycleEncoder(throughBoreInput);
+        throughBoreEncoderRight = new DutyCycleEncoder(throughBoreInputRight);
         leftOuttakeMotor = new CANSparkMax(Constants.Out1, MotorType.kBrushless);
         rightOuttakeMotor = new CANSparkMax(Constants.Out2,  MotorType.kBrushless);
 
@@ -49,12 +49,13 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     // Encoders
-    public double getDistance(){
-      return throughBoreEncoder.getDistance();
+    public Double[] getBore(){
+      return new Double[] {throughBoreEncoderLeft.getDistance(), throughBoreEncoderRight.getDistance()};
     }
 
     public void resetEncoders(){
-      throughBoreEncoder.reset();
+      throughBoreEncoderLeft.reset();
+      throughBoreEncoderRight.reset();
     }
 
     // Motors Helper Functions
@@ -128,7 +129,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     // Outtake Launch Conditionals
     public boolean atLaunchRPM(){
       Double[] speeds = getOuttakeSpeed();
-      if (Math.abs(speeds[0]) >= Constants.neoLaunchRPM && Math.abs(speeds[1]) >= Constants.neoLaunchRPM){
+      if (Math.abs(speeds[0]) >= Constants.redlineLaunchRPM && Math.abs(speeds[1]) >= Constants.redlineLaunchRPM){
           return true;
       }
       return false;
@@ -144,6 +145,8 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     public void periodic() {
       // SmartDashboard
       SmartDashboard.putBoolean("Ready to Shoot", canShoot());
-      SmartDashboard.putNumber("Intake Bore Encoder", getDistance());
+      SmartDashboard.putNumber("Average Outtake RPM", ((getOuttakeSpeed()[0]+getOuttakeSpeed()[1])/2));
+      SmartDashboard.putNumber("Intake Bore Encoder Left", getBore()[0]);
+      SmartDashboard.putNumber("Intake Bore Encoder Right", getBore()[1]);
     }
 }

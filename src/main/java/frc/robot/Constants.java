@@ -15,9 +15,9 @@ public final class Constants {
   public static int Out2 = 2;
   public static int In1 = 3;
   public static int In2 = 4;
-  public static int neoTheoretialMaxRPM = 5676;
-  public static double neoLaunchPercent = 58;
-  public static double neoLaunchRPM = neoTheoretialMaxRPM * (neoLaunchPercent/100); 
+  public static int redlineTheoretialMaxRPM = 21000;
+  public static double redlineLaunchPercent = 90;
+  public static double redlineLaunchRPM = redlineTheoretialMaxRPM * (redlineLaunchPercent/100); 
 
   // Joysticks
   public static Joystick mainStick = new Joystick(0);

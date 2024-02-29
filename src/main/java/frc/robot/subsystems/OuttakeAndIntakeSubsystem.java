@@ -92,7 +92,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     public void setOuttakeSpeed(double speed){
       leftOuttakeMotor.set(speed);
-      rightOuttakeMotor.set(-speed);
+      rightOuttakeMotor.set(speed);
     }
 
 

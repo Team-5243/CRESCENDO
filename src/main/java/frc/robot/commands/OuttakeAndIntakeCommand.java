@@ -32,7 +32,7 @@ public class OuttakeAndIntakeCommand extends Command {
     // If Side Button Pressed
     // Set Outtake Speed to 1
     if (Constants.secondStick.getRawButton(1)){
-        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(0.6);
+        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(1);
     }
     else {
         m_outtakeAndIntakeSubsystem.setOuttakeSpeed(0);

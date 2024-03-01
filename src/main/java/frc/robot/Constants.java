@@ -11,8 +11,8 @@ public final class Constants {
   public static int BR = 2;
 
   // CANSparkMax
-  public static int Out1 = 1;
-  public static int Out2 = 2;
+  public static int OutLeft = 1;
+  public static int OutRight = 2;
   public static int In1 = 3;
   public static int In2 = 4;
   public static int redlineTheoretialMaxRPM = 21000;

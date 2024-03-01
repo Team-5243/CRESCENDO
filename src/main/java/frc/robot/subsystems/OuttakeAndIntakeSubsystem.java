@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.REVLibError;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
@@ -13,10 +14,6 @@ import frc.robot.Constants;
 public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     // Intake
-    DigitalInput throughBoreInputLeft;
-    DutyCycleEncoder throughBoreEncoderLeft;
-    DigitalInput throughBoreInputRight;
-    DutyCycleEncoder throughBoreEncoderRight;
     CANSparkMax intakeMotor;
     CANSparkMax armMotor;
 
@@ -25,21 +22,23 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     CANSparkMax leftOuttakeMotor;
     CANSparkMax rightOuttakeMotor;
 
+    DigitalInput throughBoreInputLeft;
+    DutyCycleEncoder throughBoreEncoderLeft;
+    DigitalInput throughBoreInputRight;
+    DutyCycleEncoder throughBoreEncoderRight;
+
     public OuttakeAndIntakeSubsystem() {
         // Intake
-        // throughBoreInput = new DigitalInput(0);
-        // throughBoreEncoder = new DutyCycleEncoder(throughBoreInput);
-        intakeMotor = new CANSparkMax(Constants.In1,  MotorType.kBrushless);
-        armMotor = new CANSparkMax(Constants.In2,  MotorType.kBrushless);
+        intakeMotor = new CANSparkMax(Constants.In1,  MotorType.kBrushed);
+        armMotor = new CANSparkMax(Constants.In2,  MotorType.kBrushed);
 
         // Outtake
         throughBoreInputLeft = new DigitalInput(0);
         throughBoreEncoderLeft = new DutyCycleEncoder(throughBoreInputLeft);
-
-        throughBoreInputRight = new DigitalInput(0);
+        throughBoreInputRight = new DigitalInput(1);
         throughBoreEncoderRight = new DutyCycleEncoder(throughBoreInputRight);
-        leftOuttakeMotor = new CANSparkMax(Constants.Out1, MotorType.kBrushless);
-        rightOuttakeMotor = new CANSparkMax(Constants.Out2,  MotorType.kBrushless);
+        leftOuttakeMotor = new CANSparkMax(Constants.OutLeft, MotorType.kBrushed);
+        rightOuttakeMotor = new CANSparkMax(Constants.OutRight,  MotorType.kBrushed);
 
         // Reset Encoders
         resetEncoders();

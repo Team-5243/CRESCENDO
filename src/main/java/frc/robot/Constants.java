@@ -11,10 +11,10 @@ public final class Constants {
   public static int BR = 2;
 
   // CANSparkMax
-  public static int OutLeft = 1;
-  public static int OutRight = 2;
-  public static int In1 = 3;
-  public static int In2 = 4;
+  public static int OutLeft = 30;
+  public static int OutRight = 20;
+  public static int In1 = 33;
+  public static int In2 = 44;
   public static int redlineTheoretialMaxRPM = 21000;
   public static double redlineLaunchPercent = 90;
   public static double redlineLaunchRPM = redlineTheoretialMaxRPM * (redlineLaunchPercent/100); 

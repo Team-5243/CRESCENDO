@@ -17,6 +17,7 @@ public class OuttakeAndIntakeCommand extends Command {
 
   @Override
   public void initialize() {
+
   }
 
 
@@ -35,7 +36,7 @@ public class OuttakeAndIntakeCommand extends Command {
         m_outtakeAndIntakeSubsystem.setOuttakeSpeed(1);
     }
     else {
-        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(0);
+        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineIdlePercent);
     }
 
     // If Button #3 (Left Bottom) Pressed
@@ -44,11 +45,12 @@ public class OuttakeAndIntakeCommand extends Command {
         m_outtakeAndIntakeSubsystem.intakeRing();
     }
 
-    // // If Button #4 (Right Bottom) Pressed
-    // // Align Arm with Intake
-    // if (Constants.secondStick.getRawButton(3)){
-    //     m_outtakeAndIntakeSubsystem.moveArmToIntake();
-    // }
+    // If Button #4 (Right Bottom) Pressed
+    // Align Arm with Intake
+    if (Constants.secondStick.getRawButton(3)){
+        // m_outtakeAndIntakeSubsystem.moveArmToIntake();
+        m_outtakeAndIntakeSubsystem.setArmSpeed(1);
+    }
 
     // // If Button #6 (Right Top) Pressed
     // // Align Arm with Outtake

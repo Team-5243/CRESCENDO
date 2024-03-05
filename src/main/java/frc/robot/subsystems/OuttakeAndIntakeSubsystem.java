@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.REVLibError;
-//import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
@@ -23,23 +21,24 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     CANSparkMax leftOuttakeMotor;
     CANSparkMax rightOuttakeMotor;
 
-    DigitalInput throughBoreInputLeft;
-    DutyCycleEncoder throughBoreEncoderLeft;
-    DigitalInput throughBoreInputRight;
-    DutyCycleEncoder throughBoreEncoderRight;
+    DigitalInput throughBoreInputArm;
+    DutyCycleEncoder throughBoreEncoderArm;
+
+    DigitalInput throughBoreInputOuttake;
+    DutyCycleEncoder throughBoreEncoderOuttake;
 
     public OuttakeAndIntakeSubsystem() {
         // Intake
-        intakeMotor = new CANSparkMax(Constants.In1,  MotorType.kBrushed);
-        armMotor = new CANSparkMax(Constants.In2,  MotorType.kBrushed);
+        intakeMotor = new CANSparkMax(Constants.Roller,  MotorType.kBrushed);
+        armMotor = new CANSparkMax(Constants.Arm,  MotorType.kBrushed);
+        throughBoreInputArm = new DigitalInput(0);
+        throughBoreEncoderArm = new DutyCycleEncoder(throughBoreInputArm);
 
         // Outtake
-        throughBoreInputLeft = new DigitalInput(0);
-        throughBoreEncoderLeft = new DutyCycleEncoder(throughBoreInputLeft);
-        throughBoreInputRight = new DigitalInput(1);
-        throughBoreEncoderRight = new DutyCycleEncoder(throughBoreInputRight);
         leftOuttakeMotor = new CANSparkMax(Constants.OutLeft, MotorType.kBrushed);
         rightOuttakeMotor = new CANSparkMax(Constants.OutRight,  MotorType.kBrushed);
+        throughBoreInputOuttake = new DigitalInput(1);
+        throughBoreEncoderOuttake = new DutyCycleEncoder(throughBoreInputOuttake);
 
         // Reset Encoders
         resetEncoders();
@@ -49,13 +48,17 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     // Encoders
-    public Double[] getBore(){
-      return new Double[] {throughBoreEncoderLeft.getDistance(), throughBoreEncoderRight.getDistance()};
+    public double getThroughBoreArm(){
+      return throughBoreEncoderArm.getDistance();
+    }
+
+    public double getThroughBoreOuttake(){
+      return throughBoreEncoderOuttake.getDistance();
     }
 
     public void resetEncoders(){
-      throughBoreEncoderLeft.reset();
-      throughBoreEncoderRight.reset();
+      throughBoreEncoderArm.reset();
+      throughBoreEncoderOuttake.reset();
     }
 
     // Motors Helper Functions
@@ -91,7 +94,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     public void setOuttakeSpeed(double speed){
-      leftOuttakeMotor.set(speed);
+      leftOuttakeMotor.set(-speed);
       rightOuttakeMotor.set(speed);
     }
 
@@ -107,19 +110,26 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
 
     // Move Arm
-    // public void moveArmToOuttake(){
-    //   // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
-    //   while(throughBoreEncoder.getAbsolutePosition() < 30){
-    //     setArmSpeed(-.1);
-    //   }
-    // }
+    public void moveArmToOuttake(){
+      // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
+      if(throughBoreEncoderArm.getAbsolutePosition() < 30){
+        setArmSpeed(-.1);
+      }
+    }
 
-    // public void moveArmToIntake(){
-    //   // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
-    //   while(throughBoreEncoder.getAbsolutePosition() < 30){
-    //     setArmSpeed(-.1);
-    //   }
-    // }
+    public void moveArmToIntake(){
+      // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
+      if(throughBoreEncoderArm.getAbsolutePosition() < 30){
+        setArmSpeed(-.1);
+      }
+    }
+
+    public void moveArmToAmp(){
+      // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
+      if(throughBoreEncoderArm.getAbsolutePosition() < 30){
+        setArmSpeed(-.1);
+      }
+    }
 
     public void shootRing(){
         pushRingToOuttake();
@@ -145,8 +155,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     public void periodic() {
       // SmartDashboard
       SmartDashboard.putBoolean("Ready to Shoot", canShoot());
-      SmartDashboard.putNumber("Average Outtake RPM", ((getOuttakeSpeed()[0]+getOuttakeSpeed()[1])/2));
-      SmartDashboard.putNumber("Intake Bore Encoder Left", getBore()[0]);
-      SmartDashboard.putNumber("Intake Bore Encoder Right", getBore()[1]);
+      SmartDashboard.putNumber("Intake Arm Bore", getThroughBoreArm());
+      SmartDashboard.putNumber("Outtake Bore", getThroughBoreOuttake());
     }
 }

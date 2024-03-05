@@ -13,11 +13,12 @@ public final class Constants {
   // CANSparkMax
   public static int OutLeft = 30;
   public static int OutRight = 20;
-  public static int In1 = 33;
-  public static int In2 = 44;
+  public static int Roller = 33;
+  public static int Arm = 44;
   public static int redlineTheoretialMaxRPM = 21000;
   public static double redlineLaunchPercent = 90;
   public static double redlineLaunchRPM = redlineTheoretialMaxRPM * (redlineLaunchPercent/100); 
+  public static double redlineIdlePercent = 0.08;
 
   // Joysticks
   public static Joystick mainStick = new Joystick(0);

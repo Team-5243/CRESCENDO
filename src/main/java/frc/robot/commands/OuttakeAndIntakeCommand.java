@@ -35,19 +35,20 @@ public class OuttakeAndIntakeCommand extends Command {
 
     
 
-    // If Button #3 (Left Bottom) Pressed
-    // Set Arm Speed to .1
-    double armSpeed = .05;
+    // Button Controls for Arm (3/4)
     if (Constants.secondStick.getRawButton(5)){
-        m_outtakeAndIntakeSubsystem.setArmSpeed(armSpeed);
-    } else if (Constants.secondStick.getRawButton(3)) {
-        m_outtakeAndIntakeSubsystem.setArmSpeed(-armSpeed);
-    } else {
-        m_outtakeAndIntakeSubsystem.setArmSpeed(0);
+        m_outtakeAndIntakeSubsystem.setArmSpeed(Constants.armSpeed);
+    } 
+    
+    else if (Constants.secondStick.getRawButton(3)) {
+        m_outtakeAndIntakeSubsystem.setArmSpeed(-Constants.armSpeed);
+    } 
+
+    else {
+      m_outtakeAndIntakeSubsystem.setArmSpeed(0);
     }
   }
-
-
+  
   @Override
   public void end(boolean interrupted) {}
 

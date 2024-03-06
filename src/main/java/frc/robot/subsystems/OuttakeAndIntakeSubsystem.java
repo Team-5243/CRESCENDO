@@ -80,10 +80,11 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
         rightOuttakeMotor.clearFaults();
     }
 
+    // PID Tuning for Arm
     public void setArmPID(){
-        armMotor.setKP(0.05);
-        armMotor.setKI(0.05);
-        armMotor.setKD(0.05);
+        armMotor.setKP(Constants.armKp);
+        armMotor.setKI(Constants.armKi);
+        armMotor.setKD(Constants.armKd);
     }
 
 

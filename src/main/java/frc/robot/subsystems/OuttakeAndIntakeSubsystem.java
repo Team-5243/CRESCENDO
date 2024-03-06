@@ -54,6 +54,9 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
         // Reset Motor
         resetMotors();
+
+        // Set PID
+        setArmPID();
     }
 
     // Encoders
@@ -75,6 +78,12 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
         intakeMotor.clearFaults();
         leftOuttakeMotor.clearFaults();
         rightOuttakeMotor.clearFaults();
+    }
+
+    public void setArmPID(){
+        armMotor.setKP(0.05);
+        armMotor.setKI(0.05);
+        armMotor.setKD(0.05);
     }
 
 

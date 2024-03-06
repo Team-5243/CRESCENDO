@@ -24,14 +24,8 @@ public class OuttakeAndIntakeCommand extends Command {
   @Override
   public void execute() {
 
-    // If Trigger Pressed
-    // Shoot Ring
-    if (Constants.secondStick.getTrigger()){
-        m_outtakeAndIntakeSubsystem.shootRing();
-    }
-
     // If Side Button Pressed
-    // Set Outtake Speed to 1
+    // Set Outtake Speed to 1 & Set Idle Speed
     if (Constants.secondStick.getRawButton(1)){
         m_outtakeAndIntakeSubsystem.setOuttakeSpeed(1);
     }
@@ -39,24 +33,18 @@ public class OuttakeAndIntakeCommand extends Command {
         m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineIdlePercent);
     }
 
+    
+
     // If Button #3 (Left Bottom) Pressed
-    // Spin Intake to Take in Ring
-    if (Constants.secondStick.getRawButton(2)){
-        m_outtakeAndIntakeSubsystem.intakeRing();
+    // Set Arm Speed to .1
+    double armSpeed = .05;
+    if (Constants.secondStick.getRawButton(5)){
+        m_outtakeAndIntakeSubsystem.setArmSpeed(armSpeed);
+    } else if (Constants.secondStick.getRawButton(3)) {
+        m_outtakeAndIntakeSubsystem.setArmSpeed(-armSpeed);
+    } else {
+        m_outtakeAndIntakeSubsystem.setArmSpeed(0);
     }
-
-    // If Button #4 (Right Bottom) Pressed
-    // Align Arm with Intake
-    if (Constants.secondStick.getRawButton(3)){
-        // m_outtakeAndIntakeSubsystem.moveArmToIntake();
-        m_outtakeAndIntakeSubsystem.setArmSpeed(1);
-    }
-
-    // // If Button #6 (Right Top) Pressed
-    // // Align Arm with Outtake
-    // if(Constants.secondStick.getRawButton(5)){
-    //     m_outtakeAndIntakeSubsystem.moveArmToOuttake();
-    // }
   }
 
 

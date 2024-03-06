@@ -1,10 +1,12 @@
 package frc.robot.subsystems;
 
+import com.playingwithfusion.CANVenom;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -14,7 +16,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     // Intake
     CANSparkMax intakeMotor;
-    CANSparkMax armMotor;
+    CANVenom armMotor;
 
 
     // Outtake
@@ -24,15 +26,22 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     DigitalInput throughBoreInputArm;
     DutyCycleEncoder throughBoreEncoderArm;
 
+    DigitalInput topLimitSwitch;
+    DigitalInput bottomLimitSwitch;
+
     DigitalInput throughBoreInputOuttake;
     DutyCycleEncoder throughBoreEncoderOuttake;
 
     public OuttakeAndIntakeSubsystem() {
         // Intake
         intakeMotor = new CANSparkMax(Constants.Roller,  MotorType.kBrushed);
-        armMotor = new CANSparkMax(Constants.Arm,  MotorType.kBrushed);
+        armMotor = new CANVenom(50);
         throughBoreInputArm = new DigitalInput(0);
         throughBoreEncoderArm = new DutyCycleEncoder(throughBoreInputArm);
+        // topLimitSwitch = new DigitalInput(0);
+        bottomLimitSwitch = new DigitalInput(8);
+        armMotor.setBrakeCoastMode(CANVenom.BrakeCoastMode.Brake);
+
 
         // Outtake
         leftOuttakeMotor = new CANSparkMax(Constants.OutLeft, MotorType.kBrushed);
@@ -64,7 +73,6 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     // Motors Helper Functions
     public void resetMotors(){
         intakeMotor.clearFaults();
-        armMotor.clearFaults();
         leftOuttakeMotor.clearFaults();
         rightOuttakeMotor.clearFaults();
     }
@@ -90,7 +98,20 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     public void setArmSpeed(double speed){
-        armMotor.set(speed);
+       if (speed>0) {
+        // if (topLimitSwitch.get()) {
+        //   armMotor.set(0);
+        // } else  {
+        //   armMotor.set(speed);
+        // }
+      
+       } else {
+        if (bottomLimitSwitch.get()) {
+          armMotor.set(0);
+        } else {
+          armMotor.set(speed);
+        }
+       }
     }
 
     public void setOuttakeSpeed(double speed){
@@ -112,7 +133,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     // Move Arm
     public void moveArmToOuttake(){
       // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
-      if(throughBoreEncoderArm.getAbsolutePosition() < 30){
+      if(throughBoreEncoderArm.getAbsolutePosition() < 4){
         setArmSpeed(-.1);
       }
     }
@@ -155,7 +176,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     public void periodic() {
       // SmartDashboard
       SmartDashboard.putBoolean("Ready to Shoot", canShoot());
-      SmartDashboard.putNumber("Intake Arm Bore", getThroughBoreArm());
+      SmartDashboard.putNumber("Intake Arm Bore", armMotor.getPosition());
       SmartDashboard.putNumber("Outtake Bore", getThroughBoreOuttake());
     }
 }

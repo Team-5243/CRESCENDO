@@ -64,11 +64,15 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     public void resetMotors(){
+        armMotor.clearLatchedFaults();
         rollerMotor.clearFaults();
         leftOuttakeMotor.clearFaults();
         rightOuttakeMotor.clearFaults();
     }
 
+    public void zeroMotor(){
+      armMotor.resetPosition();
+    }
 
     // PID Tuning for Arm
     public void setArmPID(){

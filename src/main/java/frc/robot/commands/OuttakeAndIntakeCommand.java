@@ -31,7 +31,11 @@ public class OuttakeAndIntakeCommand extends Command {
   @Override
   public void execute() {
 
-    // Trigger Outtake (Pressed )
+    // Set to Joystick
+    m_outtakeAndIntakeSubsystem.setArmSpeed(Constants.secondStick.getY());
+
+    
+    // Trigger Outtake (Pressed)
     if (Constants.secondStick.getRawButton(1)){
         m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineOuttakePercent);
     }

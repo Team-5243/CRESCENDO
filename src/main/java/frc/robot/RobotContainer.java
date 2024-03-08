@@ -24,10 +24,6 @@ public class RobotContainer {
     m_outtakeAndIntakeSubsystem.setDefaultCommand(m_outtakeAndIntakeCommand);
   }
 
-  private void configureBindings() {
-
-  }
-
   public Command getAutonomousCommand() {
     return AutonCommand.mainAuton(m_driveSubsystem);
   }

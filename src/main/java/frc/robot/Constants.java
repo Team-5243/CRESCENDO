@@ -29,7 +29,7 @@ public final class Constants {
 
   // Arm 
   public static double armSpeed = 0.6;
-  public static double armGearRatio = 10;
+  public static double armGearRatio = 8;
 
   public static double armAMPPosition = -2.6888;
   public static double armOuttakePosition = 0;

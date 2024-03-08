@@ -29,6 +29,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     DutyCycleEncoder throughBoreEncoderArm;
 
     DigitalInput intakeLimitSwitch;
+    DigitalInput outtakeLimitSwitch;
 
     DigitalInput topLimitSwitch;
     DigitalInput bottomLimitSwitch;
@@ -44,11 +45,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
         throughBoreInputArm = new DigitalInput(0);
         throughBoreEncoderArm = new DutyCycleEncoder(throughBoreInputArm);
-
         intakeLimitSwitch = new DigitalInput(1);
-
-        // bottomLimitSwitch = new DigitalInput(8);
-        // topLimitSwitch = new DigitalInput(7);
 
 
         // Outtake
@@ -56,6 +53,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
         rightOuttakeMotor = new CANSparkMax(Constants.OutRight,  MotorType.kBrushed);
         throughBoreInputOuttake = new DigitalInput(2);
         throughBoreEncoderOuttake = new DutyCycleEncoder(throughBoreInputOuttake);
+        outtakeLimitSwitch = new DigitalInput(3);
     }
 
 
@@ -108,9 +106,9 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
       return intakeLimitSwitch.get();
     }
 
-    // public boolean outtakeHasRing(){
-    //   return outtakeLimitSwitch.get();
-    // }
+    public boolean outtakeHasRing(){
+      return outtakeLimitSwitch.get();
+    }
 
 
     // Mutator Methods

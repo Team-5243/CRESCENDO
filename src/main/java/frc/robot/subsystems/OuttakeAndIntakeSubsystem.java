@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import com.playingwithfusion.CANVenom;
+import com.playingwithfusion.CANVenom.BrakeCoastMode;
+import com.playingwithfusion.CANVenom.ControlMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
@@ -15,7 +17,7 @@ import frc.robot.Constants;
 public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     // Intake
-    CANSparkMax intakeMotor;
+    CANSparkMax rollerMotor;
     CANVenom armMotor;
 
 
@@ -26,6 +28,8 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     DigitalInput throughBoreInputArm;
     DutyCycleEncoder throughBoreEncoderArm;
 
+    DigitalInput intakeLimitSwitch;
+
     DigitalInput topLimitSwitch;
     DigitalInput bottomLimitSwitch;
 
@@ -34,19 +38,23 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     public OuttakeAndIntakeSubsystem() {
         // Intake
-        intakeMotor = new CANSparkMax(Constants.Roller,  MotorType.kBrushed);
+        rollerMotor = new CANSparkMax(Constants.Roller,  MotorType.kBrushed);
         armMotor = new CANVenom(50);
+        armMotor.setBrakeCoastMode(CANVenom.BrakeCoastMode.Brake);
+
         throughBoreInputArm = new DigitalInput(0);
         throughBoreEncoderArm = new DutyCycleEncoder(throughBoreInputArm);
-        // topLimitSwitch = new DigitalInput(0);
-        bottomLimitSwitch = new DigitalInput(8);
-        armMotor.setBrakeCoastMode(CANVenom.BrakeCoastMode.Brake);
+
+        intakeLimitSwitch = new DigitalInput(1);
+
+        // bottomLimitSwitch = new DigitalInput(8);
+        // topLimitSwitch = new DigitalInput(7);
 
 
         // Outtake
         leftOuttakeMotor = new CANSparkMax(Constants.OutLeft, MotorType.kBrushed);
         rightOuttakeMotor = new CANSparkMax(Constants.OutRight,  MotorType.kBrushed);
-        throughBoreInputOuttake = new DigitalInput(1);
+        throughBoreInputOuttake = new DigitalInput(2);
         throughBoreEncoderOuttake = new DutyCycleEncoder(throughBoreInputOuttake);
 
         // Reset Encoders
@@ -68,6 +76,10 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
       return throughBoreEncoderOuttake.getDistance();
     }
 
+    public boolean getIntakeLimitSwitch(){
+      return intakeLimitSwitch.get();
+    }
+
     public void resetEncoders(){
       throughBoreEncoderArm.reset();
       throughBoreEncoderOuttake.reset();
@@ -75,7 +87,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     // Motors Helper Functions
     public void resetMotors(){
-        intakeMotor.clearFaults();
+        rollerMotor.clearFaults();
         leftOuttakeMotor.clearFaults();
         rightOuttakeMotor.clearFaults();
     }
@@ -85,12 +97,15 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
         armMotor.setKP(Constants.armKp);
         armMotor.setKI(Constants.armKi);
         armMotor.setKD(Constants.armKd);
+        armMotor.setKF(Constants.armKf);
+        armMotor.setMaxAcceleration(Constants.armMaxA);
+        armMotor.setMaxSpeed(Constants.armMaxV);
     }
 
 
     // Accessor Methods
     public double getIntakeSpeed(){
-        return intakeMotor.get();
+        return rollerMotor.get();
     }
 
     public double getArmSpeed(){
@@ -103,25 +118,12 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
 
     // Set Speeds
-    public void setIntakeSpeed(double speed){
-        intakeMotor.set(speed);
+    public void setRollerSpeed(double speed){
+        rollerMotor.set(speed);
     }
 
     public void setArmSpeed(double speed){
-       if (speed>0) {
-        // if (topLimitSwitch.get()) {
-        //   armMotor.set(0);
-        // } else  {
-        //   armMotor.set(speed);
-        // }
-      
-       } else {
-        if (bottomLimitSwitch.get()) {
-          armMotor.set(0);
-        } else {
-          armMotor.set(speed);
-        }
-       }
+        armMotor.set(speed);
     }
 
     public void setOuttakeSpeed(double speed){
@@ -132,38 +134,37 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     // Change Intake Speed
     public void intakeRing(){
-      setIntakeSpeed(1);
+      setRollerSpeed(Constants.redlineRollerInPercent);
     }
 
-    public void pushRingToOuttake(){
-      setIntakeSpeed(-0.3);
+    public void loadOuttake(){
+      setRollerSpeed(-Constants.redlineRollerOutPercent);
     }
 
 
     // Move Arm
     public void moveArmToOuttake(){
-      // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
-      if(throughBoreEncoderArm.getAbsolutePosition() < 4){
-        setArmSpeed(-.1);
-      }
+      // if(getThroughBoreArm() > Constants.armOuttakeAngle){
+        setArmSpeed(Constants.armSpeed);
+      // }
     }
 
     public void moveArmToIntake(){
-      // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
-      if(throughBoreEncoderArm.getAbsolutePosition() < 30){
-        setArmSpeed(-.1);
-      }
+      // if(getThroughBoreArm() > Constants.armIntakeAngle){
+        setArmSpeed(-Constants.armSpeed);
+      // }
     }
 
-    public void moveArmToAmp(){
-      // find angle difference and where the arm currently is, move so the angle lines up with the set angle for the intake
-      if(throughBoreEncoderArm.getAbsolutePosition() < 30){
-        setArmSpeed(-.1);
-      }
+    public void holdArmAtAmp(){
+      armMotor.setCommand(ControlMode.PositionControl, 0);
+    }
+
+    public void getArmPosition(){
+      System.out.println(armMotor.getPosition());
     }
 
     public void shootRing(){
-        pushRingToOuttake();
+        loadOuttake();
     }
 
 
@@ -185,8 +186,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
       // SmartDashboard
-      SmartDashboard.putBoolean("Ready to Shoot", canShoot());
-      SmartDashboard.putNumber("Intake Arm Bore", armMotor.getPosition());
-      SmartDashboard.putNumber("Outtake Bore", getThroughBoreOuttake());
+      SmartDashboard.putBoolean("Ring in Intake", intakeLimitSwitch.get());
+      SmartDashboard.putNumber("Arm Angle", getThroughBoreArm());
     }
 }

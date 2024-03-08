@@ -62,7 +62,7 @@ public class DriveSubsystem extends SubsystemBase {
     gyro = new AHRS();
 
     // Create Drive Kinematics
-    driveKinematics = new DifferentialDriveKinematics(Constants.trackWidth);
+    driveKinematics = new DifferentialDriveKinematics(Constants.driveTrackWidth);
 
     // Create Diff Drive Pose Estimator
     drivePoseEstimator = new DifferentialDrivePoseEstimator(driveKinematics, new Rotation2d(gyro.getAngle()), 
@@ -109,7 +109,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Motor Meters Traveled
   public double getMeters(CANVenom motor){
-    return motor.getPosition() / (Constants.wheelCircumference * Constants.drivetrainGearRatio);
+    return motor.getPosition() / (Constants.driveWheelCircumference * Constants.driveGearRatio);
 
   }
 

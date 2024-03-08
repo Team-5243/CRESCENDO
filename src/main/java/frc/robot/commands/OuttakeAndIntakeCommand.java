@@ -17,38 +17,30 @@ public class OuttakeAndIntakeCommand extends Command {
 
   @Override
   public void initialize() {
+      // Reset Encoders
+      m_outtakeAndIntakeSubsystem.resetEncoders();
 
+      // Reset Motor
+      m_outtakeAndIntakeSubsystem.resetMotors();
+
+      // Set PID
+      m_outtakeAndIntakeSubsystem.setArmPID();
   }
 
 
   @Override
   public void execute() {
 
-    // If Side Button Pressed
-    // Set Outtake Speed to 1 & Set Idle Speed
+    // Trigger Outtake (Pressed )
     if (Constants.secondStick.getRawButton(1)){
-        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(1);
+        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineOuttakePercent);
     }
     else {
         m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineIdlePercent);
     }
 
-    
 
-    // Button Controls for Arm (Left Buttons)
-    if (Constants.secondStick.getRawButton(5)){
-        m_outtakeAndIntakeSubsystem.moveArmToIntake();
-    } 
-    
-    else if (Constants.secondStick.getRawButton(3)) {
-        m_outtakeAndIntakeSubsystem.moveArmToOuttake();
-    } 
-
-    else {
-      m_outtakeAndIntakeSubsystem.setArmSpeed(0);
-    }
-
-        // Button Controls for Arm (Right Buttons)
+    // Button Controls for Rollers
     if (Constants.secondStick.getRawButton(4)){
         m_outtakeAndIntakeSubsystem.intakeRing();
     } 
@@ -61,12 +53,18 @@ public class OuttakeAndIntakeCommand extends Command {
       m_outtakeAndIntakeSubsystem.setRollerSpeed(0);
     }
 
-    if (Constants.secondStick.getRawButton(2)){
-      m_outtakeAndIntakeSubsystem.holdArmAtAmp();
-    }
+
+    // Button Controls for Arm
+    if (Constants.secondStick.getRawButton(8)){
+        m_outtakeAndIntakeSubsystem.moveArmToIntake();
+    } 
+    
+    if (Constants.secondStick.getRawButton(10)) {
+        m_outtakeAndIntakeSubsystem.moveArmToOuttake();
+    } 
 
     if (Constants.secondStick.getRawButton(12)){
-      m_outtakeAndIntakeSubsystem.getArmPosition();
+      m_outtakeAndIntakeSubsystem.moveArmToAmp();
     }
   }
   

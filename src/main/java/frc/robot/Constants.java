@@ -13,9 +13,11 @@ public final class Constants {
   public static int redlineTheoretialMaxRPM = 21000;
   public static double redlineLaunchPercent = 90;
   public static double redlineLaunchRPM = redlineTheoretialMaxRPM * (redlineLaunchPercent/100); 
+
   public static double redlineIdlePercent = 0.27;
   public static double redlineRollerInPercent = 0.5;
   public static double redlineRollerOutPercent = 0.6;
+  public static double redlineOuttakePercent = 1;
 
 
   // Intake/Outtake CAN
@@ -26,10 +28,13 @@ public final class Constants {
 
 
   // Arm 
-  public static double armOuttakeAngle = -0.57;
-  public static double armIntakeAngle = 0;
-  public static double armAMPAngle = -0.14;
   public static double armSpeed = 0.6;
+  public static double armGearRatio = 10;
+
+  public static double armAMPPosition = -2.6888;
+  public static double armOuttakePosition = 0;
+  public static double armIntakePosition = -5.4916;
+
 
   // Arm PID
   public static double armKp = 1.5;
@@ -46,18 +51,25 @@ public final class Constants {
   public static int BL = 3;
   public static int BR = 2;
 
+
   // Drive PID
   public static double driveKp = 0;
   public static double driveKi = 0;
   public static double driveKd = 0;
+  public static double driveKf = 0;
+  public static double driveMaxV = 0;
+  public static double driveMaxA = 0;
+
 
   // Drive (Meters)
-  public static double wheelCircumference = 0.478779;
-  public static double drivetrainGearRatio = 8.46;
-  public static double trackWidth = 12;
+  public static double driveMaxSpeed = 0;
+  public static double driveMaxAcceleration = 0;
+
   
-  public static double maxSpeed = 0;
-  public static double maxAcceleration = 0;
+  // Chassis
+  public static double driveWheelCircumference = 0.478779;
+  public static double driveGearRatio = 8.46;
+  public static double driveTrackWidth = 12;
   public static double mass = 0;
 
   public static class OperatorConstants {

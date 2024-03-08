@@ -56,41 +56,21 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
         rightOuttakeMotor = new CANSparkMax(Constants.OutRight,  MotorType.kBrushed);
         throughBoreInputOuttake = new DigitalInput(2);
         throughBoreEncoderOuttake = new DutyCycleEncoder(throughBoreInputOuttake);
-
-        // Reset Encoders
-        resetEncoders();
-
-        // Reset Motor
-        resetMotors();
-
-        // Set PID
-        setArmPID();
     }
 
-    // Encoders
-    public double getThroughBoreArm(){
-      return throughBoreEncoderArm.getDistance();
-    }
 
-    public double getThroughBoreOuttake(){
-      return throughBoreEncoderOuttake.getDistance();
-    }
-
-    public boolean getIntakeLimitSwitch(){
-      return intakeLimitSwitch.get();
-    }
-
+    // Resets
     public void resetEncoders(){
       throughBoreEncoderArm.reset();
       throughBoreEncoderOuttake.reset();
     }
 
-    // Motors Helper Functions
     public void resetMotors(){
         rollerMotor.clearFaults();
         leftOuttakeMotor.clearFaults();
         rightOuttakeMotor.clearFaults();
     }
+
 
     // PID Tuning for Arm
     public void setArmPID(){
@@ -104,6 +84,14 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
 
     // Accessor Methods
+    public double getThroughBoreArm(){
+      return throughBoreEncoderArm.getDistance();
+    }
+
+    public double getThroughBoreOuttake(){
+      return throughBoreEncoderOuttake.getDistance();
+    }
+
     public double getIntakeSpeed(){
         return rollerMotor.get();
     }
@@ -116,8 +104,16 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
       return new Double[] {leftOuttakeMotor.get(), rightOuttakeMotor.get()};
     }
 
+    public boolean intakeHasRing(){
+      return intakeLimitSwitch.get();
+    }
 
-    // Set Speeds
+    // public boolean outtakeHasRing(){
+    //   return outtakeLimitSwitch.get();
+    // }
+
+
+    // Mutator Methods
     public void setRollerSpeed(double speed){
         rollerMotor.set(speed);
     }
@@ -143,26 +139,20 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
 
     // Move Arm
-    public void moveArmToOuttake(){
-      // if(getThroughBoreArm() > Constants.armOuttakeAngle){
-        setArmSpeed(Constants.armSpeed);
-      // }
-    }
-
     public void moveArmToIntake(){
-      // if(getThroughBoreArm() > Constants.armIntakeAngle){
-        setArmSpeed(-Constants.armSpeed);
-      // }
+      armMotor.setCommand(ControlMode.PositionControl, Constants.armIntakePosition);
     }
 
-    public void holdArmAtAmp(){
-      armMotor.setCommand(ControlMode.PositionControl, 0);
+    public void moveArmToAmp(){
+      armMotor.setCommand(ControlMode.PositionControl, Constants.armAMPPosition);
     }
 
-    public void getArmPosition(){
-      System.out.println(armMotor.getPosition());
+    public void moveArmToOuttake(){
+      armMotor.setCommand(ControlMode.PositionControl, Constants.armOuttakePosition);
     }
 
+
+    // Combined Actions
     public void shootRing(){
         loadOuttake();
     }
@@ -178,7 +168,6 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     public boolean canShoot(){
-      // return (throughBoreEncoder.getAbsolutePosition() == Constants.ArmOuttakeAngle) ? true : false;
       return (atLaunchRPM() && true);
     }
 
@@ -186,7 +175,6 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
       // SmartDashboard
-      SmartDashboard.putBoolean("Ring in Intake", intakeLimitSwitch.get());
-      SmartDashboard.putNumber("Arm Angle", getThroughBoreArm());
+      SmartDashboard.putNumber("Arm Angle", armMotor.getPosition());
     }
 }

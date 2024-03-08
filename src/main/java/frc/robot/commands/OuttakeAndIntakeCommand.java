@@ -54,7 +54,21 @@ public class OuttakeAndIntakeCommand extends Command {
     }
 
 
-    // Button Controls for Arm
+    // Button Controls for Arm (SLAMMING)
+    if (Constants.secondStick.getRawButton(5)){
+        m_outtakeAndIntakeSubsystem.setArmSpeed(1);
+    } 
+    
+    else if (Constants.secondStick.getRawButton(3)){
+        m_outtakeAndIntakeSubsystem.setArmSpeed(-1);
+    } 
+
+    else {
+        m_outtakeAndIntakeSubsystem.setArmSpeed(0);
+    }
+
+
+    // Button Controls for Arm (SET POSITION)
     if (Constants.secondStick.getRawButton(8)){
         m_outtakeAndIntakeSubsystem.moveArmToIntake();
     } 

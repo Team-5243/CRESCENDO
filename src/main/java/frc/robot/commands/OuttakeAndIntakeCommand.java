@@ -23,6 +23,9 @@ public class OuttakeAndIntakeCommand extends Command {
       // Reset Motor
       m_outtakeAndIntakeSubsystem.resetMotors();
 
+      // Zero Arm Motor
+      m_outtakeAndIntakeSubsystem.zeroMotor();
+
       // Set PID
       m_outtakeAndIntakeSubsystem.setArmPID();
   }
@@ -34,7 +37,7 @@ public class OuttakeAndIntakeCommand extends Command {
     // Set to Joystick
     m_outtakeAndIntakeSubsystem.setArmSpeed(Constants.secondStick.getY());
 
-    
+
     // Trigger Outtake (Pressed)
     if (Constants.secondStick.getRawButton(1)){
         m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineOuttakePercent);

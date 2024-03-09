@@ -130,37 +130,34 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
 
+    // Helper
+    public double getArmPositionDifference(double desiredPosition){
+      return (desiredPosition - armMotor.getPosition());
+    }
+
+
     // Change Intake Speed
     public void intakeRing(){
       setRollerSpeed(Constants.redlineRollerInPercent);
     }
 
-    public void loadOuttake(){
-      setRollerSpeed(-Constants.redlineRollerOutPercent);
-    }
-
 
     // Move Arm
     public void moveArmToIntake(){
-      armMotor.setCommand(ControlMode.PositionControl, Constants.armIntakePosition);
+      armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armIntakePosition));
     }
 
     public void moveArmToAmp(){
-      armMotor.setCommand(ControlMode.PositionControl, Constants.armAMPPosition);
+      armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armAMPPosition));
     }
 
     public void moveArmToOuttake(){
-      armMotor.setCommand(ControlMode.PositionControl, Constants.armOuttakePosition);
+      setOuttakeSpeed(Constants.redlineOuttakePercent);
+      armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armOuttakePosition));
     }
 
 
-    // Combined Actions
-    public void shootRing(){
-        loadOuttake();
-    }
-
-
-    // Outtake Launch Conditionals
+    // Conditionals
     public boolean atLaunchRPM(){
       Double[] speeds = getOuttakeSpeed();
       if (Math.abs(speeds[0]) >= Constants.redlineLaunchRPM && Math.abs(speeds[1]) >= Constants.redlineLaunchRPM){
@@ -169,14 +166,54 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
       return false;
     }
 
+    public boolean armAtAMP(){
+      return (armMotor.getPosition()-Constants.armAMPPosition < Constants.armTolerance);
+    }
+
+    public boolean armAtOuttake(){
+      return (armMotor.getPosition()-Constants.armOuttakePosition < Constants.armTolerance);
+    }
+
+    public boolean armAtIntake(){
+      return (armMotor.getPosition()-Constants.armIntakePosition < Constants.armTolerance);
+    }
+
+    public boolean canShootOuttake(){
+      return (armAtOuttake() && atLaunchRPM() && intakeHasRing());
+    }
+
+    public boolean canShootAMP(){
+      return (armAtAMP() && intakeHasRing());
+    }
+
     public boolean canShoot(){
-      return (atLaunchRPM() && true);
+      return (canShootOuttake() || canShootAMP());
+    }
+
+
+    // Shooting
+    public boolean shoot(){
+      if (canShootAMP()){
+        setRollerSpeed(Constants.redlineRollerShootPercent);
+        return true;
+      }
+
+      else if (canShootOuttake()){
+        setRollerSpeed(Constants.redlineRollerOutPercent);
+        return true;
+      }
+
+      return false;
     }
 
 
     @Override
     public void periodic() {
       // SmartDashboard
+      SmartDashboard.getBoolean("At Intake", armAtIntake());
+      SmartDashboard.getBoolean("At Amp", armAtAMP());
+      SmartDashboard.getBoolean("At Outtake", armAtOuttake());
+      SmartDashboard.getBoolean("Can Shoot", canShoot());
       SmartDashboard.putNumber("Arm Angle", armMotor.getPosition());
     }
 }

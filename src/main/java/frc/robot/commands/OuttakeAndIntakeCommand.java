@@ -2,10 +2,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.OuttakeAndIntakeSubsystem;
+import java.lang.*;
 
 
 public class OuttakeAndIntakeCommand extends Command {
     
+  // Variables
+  long timeOfShot;
+
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final OuttakeAndIntakeSubsystem m_outtakeAndIntakeSubsystem;
 
@@ -17,6 +21,9 @@ public class OuttakeAndIntakeCommand extends Command {
 
   @Override
   public void initialize() {
+      // Variables
+      timeOfShot = 0;
+
       // Reset Encoders
       m_outtakeAndIntakeSubsystem.resetEncoders();
 
@@ -34,63 +41,51 @@ public class OuttakeAndIntakeCommand extends Command {
   @Override
   public void execute() {
 
-    // Set to Joystick
-    m_outtakeAndIntakeSubsystem.setArmSpeed(Constants.secondStick.getY());
-
-
-    // Trigger Outtake (Pressed)
-    if (Constants.secondStick.getRawButton(1)){
-        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineOuttakePercent);
-    }
-    else {
-        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineIdlePercent);
+    // Stop All Actions for Constants.waitAfterShoot time after a shot
+    if (timeOfShot + Constants.waitAfterShoot <= System.currentTimeMillis()){
+        return;
     }
 
-
-    // Button Controls for Rollers
-    if (Constants.secondStick.getRawButton(4)){
-        m_outtakeAndIntakeSubsystem.intakeRing();
-    } 
-    
-    else if (Constants.secondStick.getRawButton(6)) {
-        m_outtakeAndIntakeSubsystem.loadOuttake();
-    } 
-
-    else {
+    // After waiting the time
+    if (timeOfShot > 0){
+      m_outtakeAndIntakeSubsystem.moveArmToIntake();
+      m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineIdlePercent);
       m_outtakeAndIntakeSubsystem.setRollerSpeed(0);
+      timeOfShot = 0;
     }
 
-
-    // Button Controls for Arm (SLAMMING)
-    if (Constants.secondStick.getRawButton(5)){
-        m_outtakeAndIntakeSubsystem.setArmSpeed(1);
-    } 
     
-    else if (Constants.secondStick.getRawButton(3)){
-        m_outtakeAndIntakeSubsystem.setArmSpeed(-1);
-    } 
-
-    else {
-        m_outtakeAndIntakeSubsystem.setArmSpeed(0);
+    // Shoot
+    if (Constants.secondStick.getRawButton(1)){
+        if (m_outtakeAndIntakeSubsystem.shoot()){
+          timeOfShot = System.currentTimeMillis();
+        }
     }
+
+    // Spin Intake Rollers
+    if (Constants.secondStick.getRawButton(2)){
+        m_outtakeAndIntakeSubsystem.setRollerSpeed(Constants.redlineRollerInPercent);
+    } 
 
 
     // Button Controls for Arm (SET POSITION)
-    if (Constants.secondStick.getRawButton(8)){
+    if (Constants.secondStick.getRawButton(5)){
         m_outtakeAndIntakeSubsystem.moveArmToIntake();
     } 
     
-    if (Constants.secondStick.getRawButton(10)) {
-        m_outtakeAndIntakeSubsystem.moveArmToOuttake();
-    } 
-
-    if (Constants.secondStick.getRawButton(12)){
+    if (Constants.secondStick.getRawButton(3)){
       m_outtakeAndIntakeSubsystem.moveArmToAmp();
     }
+
+    if (Constants.secondStick.getRawButton(4)) {
+        m_outtakeAndIntakeSubsystem.moveArmToOuttake();
+    } 
   }
   
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    
+  }
 
 
   @Override

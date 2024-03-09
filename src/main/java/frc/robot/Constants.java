@@ -16,8 +16,13 @@ public final class Constants {
 
   public static double redlineIdlePercent = 0.27;
   public static double redlineRollerInPercent = 0.5;
-  public static double redlineRollerOutPercent = 0.6;
+  public static double redlineRollerOutPercent = -0.4;
+  public static double redlineRollerShootPercent = -0.6;
   public static double redlineOuttakePercent = 1;
+
+  
+  // Intake/Outtake Other
+  public static long waitAfterShoot = 500;
 
 
   // Intake/Outtake CAN
@@ -29,11 +34,12 @@ public final class Constants {
 
   // Arm 
   public static double armSpeed = 0.6;
-  public static double armGearRatio = 8;
+  public static double armGearRatio = 16;
+  public static double armTolerance = 0.5;
 
-  public static double armAMPPosition = 0;
-  public static double armOuttakePosition = 0;
   public static double armIntakePosition = 0;
+  public static double armAMPPosition = 6;
+  public static double armOuttakePosition = 12;
 
 
   // Arm PID
@@ -61,12 +67,12 @@ public final class Constants {
   public static double driveMaxA = 0;
 
 
-  // Drive (Meters)
+  // Drive
   public static double driveMaxSpeed = 0;
   public static double driveMaxAcceleration = 0;
 
   
-  // Chassis
+  // Chassis (Meters)
   public static double driveWheelCircumference = 0.478779;
   public static double driveGearRatio = 8.46;
   public static double driveTrackWidth = 12;

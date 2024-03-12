@@ -144,14 +144,17 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     // Move Arm
     public void moveArmToIntake(){
+      System.out.println("Moving Arm to Intake");
       armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armIntakePosition));
     }
 
     public void moveArmToAmp(){
+      System.out.println("Moving Arm to AMP");
       armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armAMPPosition));
     }
 
     public void moveArmToOuttake(){
+      System.out.println("Moving Arm to Outtake and Set Outtake Speed");
       setOuttakeSpeed(Constants.redlineOuttakePercent);
       armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armOuttakePosition));
     }
@@ -210,10 +213,10 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
       // SmartDashboard
-      SmartDashboard.getBoolean("At Intake", armAtIntake());
-      SmartDashboard.getBoolean("At Amp", armAtAMP());
-      SmartDashboard.getBoolean("At Outtake", armAtOuttake());
-      SmartDashboard.getBoolean("Can Shoot", canShoot());
+      SmartDashboard.putBoolean("At Intake", armAtIntake());
+      SmartDashboard.putBoolean("At Amp", armAtAMP());
+      SmartDashboard.putBoolean("At Outtake", armAtOuttake());
+      SmartDashboard.putBoolean("Can Shoot", canShoot());
       SmartDashboard.putNumber("Arm Angle", armMotor.getPosition());
     }
 }

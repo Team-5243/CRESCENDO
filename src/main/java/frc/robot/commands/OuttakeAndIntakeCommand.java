@@ -42,7 +42,7 @@ public class OuttakeAndIntakeCommand extends Command {
   public void execute() {
 
     // Stop All Actions for Constants.waitAfterShoot time after a shot
-    if (timeOfShot + Constants.waitAfterShoot <= System.currentTimeMillis()){
+    if (timeOfShot != 0 && timeOfShot + Constants.waitAfterShoot <= System.currentTimeMillis()){
         return;
     }
 
@@ -53,7 +53,6 @@ public class OuttakeAndIntakeCommand extends Command {
       m_outtakeAndIntakeSubsystem.setRollerSpeed(0);
       timeOfShot = 0;
     }
-
     
     // Shoot
     if (Constants.secondStick.getRawButton(1)){

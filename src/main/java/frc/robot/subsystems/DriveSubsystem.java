@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,6 +37,7 @@ public class DriveSubsystem extends SubsystemBase {
   
   public DifferentialDrivePoseEstimator drivePoseEstimator;
   public DifferentialDriveKinematics driveKinematics;
+  public Field2d field;
 
 
   public DriveSubsystem() {
@@ -67,6 +69,9 @@ public class DriveSubsystem extends SubsystemBase {
     // Create Diff Drive Pose Estimator
     drivePoseEstimator = new DifferentialDrivePoseEstimator(driveKinematics, new Rotation2d(gyro.getAngle()), 
       getMeters(fl), getMeters(fr), new Pose2d());
+
+    field = new Field2d();
+    SmartDashboard.putData(field);
 
   }
   
@@ -137,33 +142,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // SmartDashboard
-    Double[] positions = getPosition();
-    Double[] speeds = getSpeed();
-    Double[] temperatures = getTemperature();
-
-    // Front Left
-    SmartDashboard.putNumber("FL Position", positions[0]);
-    SmartDashboard.putNumber("FL Speed", speeds[0]);
-    SmartDashboard.putNumber("FL Temperature", temperatures[0]);
-
-    // Front Right
-    SmartDashboard.putNumber("FR Position", positions[1]);
-    SmartDashboard.putNumber("FR Speed", speeds[1]);
-    SmartDashboard.putNumber("FR Temperature", temperatures[1]);
-    
-    // Back Left
-    SmartDashboard.putNumber("BL Position", positions[2]);
-    SmartDashboard.putNumber("BL Speed", speeds[2]);
-    SmartDashboard.putNumber("BL Temperature", temperatures[2]);
-
-    // Back Right
-    SmartDashboard.putNumber("BR Position", positions[3]);
-    SmartDashboard.putNumber("BR Speed", speeds[3]);
-    SmartDashboard.putNumber("BR Temperature", temperatures[3]);
-
     // Pose Estimation
     drivePoseEstimator.update(new Rotation2d(gyro.getAngle()), getMeters(fl), getMeters(fr));
     // drivePoseEstimator.addVisionMeasurement(null, 0);
-  }
+    field.setRobotPose(drivePoseEstimator.getEstimatedPosition());
+  };
 }

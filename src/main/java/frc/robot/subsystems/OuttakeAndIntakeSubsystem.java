@@ -154,18 +154,19 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     // Move Arm
     public void moveArmToIntake(){
       System.out.println("Moving Arm to Intake");
-      armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armIntakePosition));
+      armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armIntakePosition)*4096);
     }
 
     public void moveArmToAmp(){
       System.out.println("Moving Arm to AMP");
-      armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armAMPPosition));
+      armMotor.setCommand(ControlMode.PositionControl, 15);
+      // armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armAMPPosition)*4096);
     }
 
     public void moveArmToOuttake(){
       System.out.println("Moving Arm to Outtake and Set Outtake Speed");
       setOuttakeSpeed(Constants.redlineOuttakePercent);
-      armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armOuttakePosition));
+      armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armOuttakePosition)*4096);
     }
 
 
@@ -179,15 +180,15 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     public boolean armAtAMP(){
-      return (Math.abs(armMotor.getPosition())-Math.abs(Constants.armAMPPosition) < Constants.armTolerance);
+      return (Math.abs(Constants.armAMPPosition)-Math.abs(armMotor.getPosition()) < Constants.armTolerance);
     }
 
     public boolean armAtOuttake(){
-      return (Math.abs(armMotor.getPosition())-Math.abs(Constants.armOuttakePosition) < Constants.armTolerance);
+      return (Math.abs(Constants.armOuttakePosition)-Math.abs(armMotor.getPosition()) < Constants.armTolerance);
     }
 
     public boolean armAtIntake(){
-      return (Math.abs(armMotor.getPosition())-Math.abs(Constants.armIntakePosition) < Constants.armTolerance);
+      return (Math.abs(Constants.armIntakePosition)-Math.abs(armMotor.getPosition()) < Constants.armTolerance);
     }
 
     public boolean canShootOuttake(){

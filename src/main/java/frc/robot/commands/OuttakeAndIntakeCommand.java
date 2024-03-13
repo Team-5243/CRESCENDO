@@ -39,7 +39,7 @@ public class OuttakeAndIntakeCommand extends Command {
       // TEST THINGS ON STARTUP (setRollerSpeed = move intake rollers)
       // TEST THINGS ON STARTUP (setArmSpeed = move arm)
       // TEST THINGS ON STARTUP (setOuttakeSpeed = set outtake speeds)
-      m_outtakeAndIntakeSubsystem.setArmSpeed(1);
+      // m_outtakeAndIntakeSubsystem.setArmSpeed(.2);
       // TEST THINGS ON STARTUP (set to a value -1 to 1)
       // TEST THINGS ON STARTUP 
       // TEST THINGS ON STARTUP

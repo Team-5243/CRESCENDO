@@ -36,8 +36,14 @@ public class OuttakeAndIntakeCommand extends Command {
       // Set PID
       m_outtakeAndIntakeSubsystem.setArmPID();
 
-      // Start Idle
-      // m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineIdlePercent);
+      // TEST THINGS ON STARTUP (setRollerSpeed = move intake rollers)
+      // TEST THINGS ON STARTUP (setArmSpeed = move arm)
+      // TEST THINGS ON STARTUP (setOuttakeSpeed = set outtake speeds)
+      m_outtakeAndIntakeSubsystem.setArmSpeed(1);
+      // TEST THINGS ON STARTUP (set to a value -1 to 1)
+      // TEST THINGS ON STARTUP 
+      // TEST THINGS ON STARTUP
+
   }
 
 
@@ -85,24 +91,6 @@ public class OuttakeAndIntakeCommand extends Command {
     if (Constants.secondStick.getRawButton(4)) {
         m_outtakeAndIntakeSubsystem.moveArmToOuttake();
     } 
-
-
-    // testing
-    if (Constants.mainStick.getRawButton(10)) {
-        m_outtakeAndIntakeSubsystem.setLeftOuttakeSpeed(1);
-    }
-    else{
-      m_outtakeAndIntakeSubsystem.setLeftOuttakeSpeed(0);
-    }
-
-    if (Constants.mainStick.getRawButton(12)) {
-        m_outtakeAndIntakeSubsystem.setRightOuttakeSpeed(1);
-    }
-    else{
-        m_outtakeAndIntakeSubsystem.setRightOuttakeSpeed(0);
-    }
-
-
   }
   
   @Override

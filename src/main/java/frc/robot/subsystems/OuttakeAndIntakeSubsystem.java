@@ -74,6 +74,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
       armMotor.resetPosition();
     }
 
+
     // PID Tuning for Arm
     public void setArmPID(){
         armMotor.setKP(Constants.armKp);
@@ -129,6 +130,14 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
       rightOuttakeMotor.set(speed);
     }
 
+    public void setLeftOuttakeSpeed(double speed){
+      leftOuttakeMotor.set(-speed);
+    }
+
+    public void setRightOuttakeSpeed(double speed){
+      rightOuttakeMotor.set(speed);
+    }
+
 
     // Helper
     public double getArmPositionDifference(double desiredPosition){
@@ -170,15 +179,15 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     public boolean armAtAMP(){
-      return (armMotor.getPosition()-Constants.armAMPPosition < Constants.armTolerance);
+      return (Math.abs(armMotor.getPosition())-Math.abs(Constants.armAMPPosition) < Constants.armTolerance);
     }
 
     public boolean armAtOuttake(){
-      return (armMotor.getPosition()-Constants.armOuttakePosition < Constants.armTolerance);
+      return (Math.abs(armMotor.getPosition())-Math.abs(Constants.armOuttakePosition) < Constants.armTolerance);
     }
 
     public boolean armAtIntake(){
-      return (armMotor.getPosition()-Constants.armIntakePosition < Constants.armTolerance);
+      return (Math.abs(armMotor.getPosition())-Math.abs(Constants.armIntakePosition) < Constants.armTolerance);
     }
 
     public boolean canShootOuttake(){
@@ -218,5 +227,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
       SmartDashboard.putBoolean("At Outtake", armAtOuttake());
       SmartDashboard.putBoolean("Can Shoot", canShoot());
       SmartDashboard.putNumber("Arm Angle", armMotor.getPosition());
+      System.out.println("Pos " + armMotor.getPosition());
+      System.out.println("Speed " + armMotor.getSpeed());
     }
 }

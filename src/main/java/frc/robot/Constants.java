@@ -14,7 +14,7 @@ public final class Constants {
   public static double redlineLaunchPercent = 90;
   public static double redlineLaunchRPM = redlineTheoretialMaxRPM * (redlineLaunchPercent/100); 
 
-  public static double redlineIdlePercent = 0.27;
+  public static double redlineIdlePercent = .32;
   public static double redlineRollerInPercent = 0.5;
   public static double redlineRollerOutPercent = -0.4;
   public static double redlineRollerShootPercent = -0.6;

@@ -35,6 +35,9 @@ public class OuttakeAndIntakeCommand extends Command {
 
       // Set PID
       m_outtakeAndIntakeSubsystem.setArmPID();
+
+      // Start Idle
+      // m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineIdlePercent);
   }
 
 
@@ -64,7 +67,10 @@ public class OuttakeAndIntakeCommand extends Command {
     // Spin Intake Rollers
     if (Constants.secondStick.getRawButton(2)){
         m_outtakeAndIntakeSubsystem.setRollerSpeed(Constants.redlineRollerInPercent);
-    } 
+    }
+    else {
+        m_outtakeAndIntakeSubsystem.setRollerSpeed(0);
+    }
 
 
     // Button Controls for Arm (SET POSITION)
@@ -79,6 +85,24 @@ public class OuttakeAndIntakeCommand extends Command {
     if (Constants.secondStick.getRawButton(4)) {
         m_outtakeAndIntakeSubsystem.moveArmToOuttake();
     } 
+
+
+    // testing
+    if (Constants.mainStick.getRawButton(10)) {
+        m_outtakeAndIntakeSubsystem.setLeftOuttakeSpeed(1);
+    }
+    else{
+      m_outtakeAndIntakeSubsystem.setLeftOuttakeSpeed(0);
+    }
+
+    if (Constants.mainStick.getRawButton(12)) {
+        m_outtakeAndIntakeSubsystem.setRightOuttakeSpeed(1);
+    }
+    else{
+        m_outtakeAndIntakeSubsystem.setRightOuttakeSpeed(0);
+    }
+
+
   }
   
   @Override

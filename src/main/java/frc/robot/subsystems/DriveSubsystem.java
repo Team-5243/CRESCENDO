@@ -106,6 +106,15 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 
+  // Reset Encoders
+  public void resetEncoders(){
+    fl.resetPosition();
+    bl.resetPosition();
+    fr.resetPosition();
+    br.resetPosition();
+  }
+
+
   // Gyro
   public AHRS getGyro(){
     return gyro;
@@ -132,11 +141,15 @@ public class DriveSubsystem extends SubsystemBase {
     return new Double[]{fl.getTemperature(), fr.getTemperature(), bl.getTemperature(), br.getTemperature()};
   }
 
-  public void resetEncoders(){
-    fl.resetPosition();
-    bl.resetPosition();
-    fr.resetPosition();
-    br.resetPosition();
+
+  // Get Encoder Data
+  public boolean safetyCheck(){
+    for (double value : getTemperature()){
+      if (value > 30){
+        return true;
+      }
+    }
+    return false;
   }
 
 
@@ -146,5 +159,8 @@ public class DriveSubsystem extends SubsystemBase {
     drivePoseEstimator.update(new Rotation2d(gyro.getAngle()), getMeters(fl), getMeters(fr));
     // drivePoseEstimator.addVisionMeasurement(null, 0);
     field.setRobotPose(drivePoseEstimator.getEstimatedPosition());
+
+    // SmartDashboard Safety Check
+    SmartDashboard.putBoolean("Safe?", safetyCheck());
   };
 }

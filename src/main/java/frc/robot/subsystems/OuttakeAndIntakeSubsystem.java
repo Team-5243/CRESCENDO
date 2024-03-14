@@ -1,8 +1,5 @@
 package frc.robot.subsystems;
 
-import com.playingwithfusion.CANVenom;
-import com.playingwithfusion.CANVenom.BrakeCoastMode;
-import com.playingwithfusion.CANVenom.ControlMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -29,45 +26,41 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     CANSparkMax leftOuttakeMotor;
     CANSparkMax rightOuttakeMotor;
 
-    DigitalInput throughBoreInputArm;
-    DutyCycleEncoder throughBoreEncoderArm;
-
     DigitalInput intakeLimitSwitch;
-    DigitalInput outtakeLimitSwitch;
 
-    DigitalInput topLimitSwitch;
-    DigitalInput bottomLimitSwitch;
+    DigitalInput throughBoreInputOuttakeLeft;
+    DutyCycleEncoder throughBoreEncoderOuttakeLeft;
 
-    DigitalInput throughBoreInputOuttake;
-    DutyCycleEncoder throughBoreEncoderOuttake;
+    DigitalInput throughBoreInputOuttakeRight;
+    DutyCycleEncoder throughBoreEncoderOuttakeRight;
 
     public OuttakeAndIntakeSubsystem() {
         // Intake
-        rollerMotor = new CANSparkMax(Constants.Roller,  MotorType.kBrushed);
-        armMotor = new CANSparkMax(50, MotorType.kBrushless);
+        rollerMotor = new CANSparkMax(Constants.IntakeMotorRoller,  MotorType.kBrushed);
+        armMotor = new CANSparkMax(Constants.IntakeMotorArm, MotorType.kBrushless);
         armEncoder = armMotor.getEncoder();
         armPIDcontroller = new PIDController(Constants.armKp, Constants.armKi, Constants.armKd);
 
-        
-
-        throughBoreInputArm = new DigitalInput(0);
-        throughBoreEncoderArm = new DutyCycleEncoder(throughBoreInputArm);
-        intakeLimitSwitch = new DigitalInput(1);
-
+        intakeLimitSwitch = new DigitalInput(Constants.IntakeLimitSwitch);
 
         // Outtake
-        leftOuttakeMotor = new CANSparkMax(Constants.OutLeft, MotorType.kBrushed);
-        rightOuttakeMotor = new CANSparkMax(Constants.OutRight,  MotorType.kBrushed);
-        throughBoreInputOuttake = new DigitalInput(2);
-        throughBoreEncoderOuttake = new DutyCycleEncoder(throughBoreInputOuttake);
-        outtakeLimitSwitch = new DigitalInput(3);
+        leftOuttakeMotor = new CANSparkMax(Constants.OuttakeMotorLeft, MotorType.kBrushed);
+        rightOuttakeMotor = new CANSparkMax(Constants.OuttakeMotorRight,  MotorType.kBrushed);
+
+        // Left Outtake Bore
+        throughBoreInputOuttakeLeft = new DigitalInput(Constants.OuttakeBoreLeft);
+        throughBoreEncoderOuttakeLeft = new DutyCycleEncoder(throughBoreInputOuttakeLeft);
+
+        // Right Outtake Bore
+        throughBoreInputOuttakeLeft = new DigitalInput(Constants.OuttakeBoreRight);
+        throughBoreEncoderOuttakeLeft = new DutyCycleEncoder(throughBoreInputOuttakeLeft);
     }
 
 
     // Resets
     public void resetEncoders(){
-      throughBoreEncoderArm.reset();
-      throughBoreEncoderOuttake.reset();
+      throughBoreEncoderOuttakeLeft.reset();
+      throughBoreEncoderOuttakeRight.reset();
       armEncoder.setPosition(0);
     }
 
@@ -78,8 +71,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     public void zeroMotor(){
-      //armMotor.resetPosition(); VENOM
-      armEncoder.setPosition(0);
+        armEncoder.setPosition(0);
     }
 
 
@@ -97,6 +89,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     //     armMotor.setMaxPILimit());
     // }
 
+
     // Reset Setpoint
     public void resetArmSetPos(){    
         armMotor.set(armPIDcontroller.calculate(armEncoder.getPosition(),0));
@@ -104,12 +97,8 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
 
     // Accessor Methods
-    public double getThroughBoreArm(){
-      return throughBoreEncoderArm.getDistance();
-    }
-
-    public double getThroughBoreOuttake(){
-      return throughBoreEncoderOuttake.getDistance();
+    public Double[] getOuttakeRPM(){
+        return new Double[] {throughBoreEncoderOuttakeLeft.getDistance(), throughBoreEncoderOuttakeRight.getDistance()};
     }
 
     public double getIntakeSpeed(){
@@ -120,20 +109,12 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
         return armMotor.get();
     }
 
-    public Double[] getOuttakeSpeed(){
-      return new Double[] {leftOuttakeMotor.get(), rightOuttakeMotor.get()};
-    }
-
     public boolean intakeHasRing(){
       return intakeLimitSwitch.get();
     }
 
-    public boolean outtakeHasRing(){
-      return outtakeLimitSwitch.get();
-    }
 
-
-    // Mutator Methods
+    // Set Intake Speeds
     public void setRollerSpeed(double speed){
         rollerMotor.set(speed);
     }
@@ -142,6 +123,8 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
         armMotor.set(speed);
     }
 
+
+    // Set Outtake Speeds
     public void setOuttakeSpeed(double speed){
       leftOuttakeMotor.set(-speed);
       rightOuttakeMotor.set(speed);
@@ -156,7 +139,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
 
-    // Helper
+    // Find Position Difference from Current Arm Position to Desired Position
     public double getArmPositionDifference(double desiredPosition){
       return (desiredPosition - armEncoder.getPosition());
     }
@@ -198,7 +181,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     // Conditionals
     public boolean atLaunchRPM(){
-      Double[] speeds = getOuttakeSpeed();
+      Double[] speeds = getOuttakeRPM();
       if (Math.abs(speeds[0]) >= Constants.redlineLaunchRPM && Math.abs(speeds[1]) >= Constants.redlineLaunchRPM){
           return true;
       }

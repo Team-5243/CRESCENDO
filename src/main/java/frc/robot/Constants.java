@@ -26,11 +26,16 @@ public final class Constants {
 
 
   // Intake/Outtake CAN
-  public static int OutLeft = 30;
-  public static int OutRight = 20;
-  public static int Roller = 44;
-  public static int Arm = 50;
+  public static int OuttakeMotorLeft = 30;
+  public static int OuttakeMotorRight = 20;
+  public static int IntakeMotorRoller = 44;
+  public static int IntakeMotorArm = 50;
 
+
+  // Intake/Outtake DIO
+  public static int OuttakeBoreLeft = 1;
+  public static int OuttakeBoreRight = 3;
+  public static int IntakeLimitSwitch = 5;
 
   // Arm 
   public static double armSpeed = 0.6;
@@ -47,11 +52,11 @@ public final class Constants {
   public static double armKp = 0.01;
   public static double armKi = 0.01;
   public static double armKd = 0.01;
-  public static double armKf = 0.184;
-  public static double armMaxV = 6000;
-  public static double armMaxA = 10000;
-  public static double armMaxPI = 0.5;
-  public static double armMinPI = -0.5;
+  // public static double armKf = 0.184;
+  // public static double armMaxV = 6000;
+  // public static double armMaxA = 10000;
+  // public static double armMaxPI = 0.5;
+  // public static double armMinPI = -0.5;
 
 
   // Drive CAN

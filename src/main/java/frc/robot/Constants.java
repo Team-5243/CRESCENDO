@@ -38,17 +38,20 @@ public final class Constants {
   public static double armTolerance = 0.05;
 
   public static double armIntakePosition = 0;
-  public static double armAMPPosition = 3.325;
+  public static double armAMPPosition = 1.28;
+  //oldAMPPos 3.325
   public static double armOuttakePosition = 6.25;
 
 
   // Arm PID
-  public static double armKp = 1.5;
-  public static double armKi = 0;
-  public static double armKd = 0;
+  public static double armKp = 0.01;
+  public static double armKi = 0.01;
+  public static double armKd = 0.01;
   public static double armKf = 0.184;
-  public static double armMaxV = 500;
-  public static double armMaxA = 150;
+  public static double armMaxV = 6000;
+  public static double armMaxA = 10000;
+  public static double armMaxPI = 0.5;
+  public static double armMinPI = -0.5;
 
 
   // Drive CAN

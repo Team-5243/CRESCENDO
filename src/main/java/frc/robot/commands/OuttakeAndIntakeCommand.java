@@ -34,15 +34,7 @@ public class OuttakeAndIntakeCommand extends Command {
       m_outtakeAndIntakeSubsystem.zeroMotor();
 
       // Set PID
-      m_outtakeAndIntakeSubsystem.setArmPID();
-
-      // TEST THINGS ON STARTUP (setRollerSpeed = move intake rollers)
-      // TEST THINGS ON STARTUP (setArmSpeed = move arm)
-      // TEST THINGS ON STARTUP (setOuttakeSpeed = set outtake speeds)
-      // m_outtakeAndIntakeSubsystem.setArmSpeed(.2);
-      // TEST THINGS ON STARTUP (set to a value -1 to 1)
-      // TEST THINGS ON STARTUP 
-      // TEST THINGS ON STARTUP
+      m_outtakeAndIntakeSubsystem.resetArmSetPos();
 
   }
 
@@ -57,10 +49,10 @@ public class OuttakeAndIntakeCommand extends Command {
 
     // After waiting the time
     if (timeOfShot > 0){
-      m_outtakeAndIntakeSubsystem.moveArmToIntake();
-      m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineIdlePercent);
-      m_outtakeAndIntakeSubsystem.setRollerSpeed(0);
-      timeOfShot = 0;
+        m_outtakeAndIntakeSubsystem.moveArmToIntake();
+        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineIdlePercent);
+        m_outtakeAndIntakeSubsystem.setRollerSpeed(0);
+        timeOfShot = 0;
     }
     
     // Shoot
@@ -84,13 +76,17 @@ public class OuttakeAndIntakeCommand extends Command {
         m_outtakeAndIntakeSubsystem.moveArmToIntake();
     } 
     
-    if (Constants.secondStick.getRawButton(3)){
-      m_outtakeAndIntakeSubsystem.moveArmToAmp();
+    else if (Constants.secondStick.getRawButton(3)){
+        m_outtakeAndIntakeSubsystem.moveArmToAmp();
     }
 
-    if (Constants.secondStick.getRawButton(4)) {
+    else if (Constants.secondStick.getRawButton(4)) {
         m_outtakeAndIntakeSubsystem.moveArmToOuttake();
     } 
+    
+    else {
+        m_outtakeAndIntakeSubsystem.armStandStill();
+    }
   }
   
   @Override

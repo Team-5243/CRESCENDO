@@ -60,8 +60,8 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     // Resets
     public void resetEncoders(){
-      // throughBoreEncoderOuttakeLeft.reset();
-      // throughBoreEncoderOuttakeRight.reset();
+      throughBoreEncoderOuttakeLeft.reset();
+      throughBoreEncoderOuttakeRight.reset();
       armEncoder.setPosition(0);
     }
 
@@ -111,10 +111,6 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
         armMotor.set(speed);
     }
 
-     public void setArmPIDSpeed(double speed){
-        //armPIDcontroller.set;
-    }
-
 
     // Set Outtake Speeds
     public void setOuttakeSpeed(double speed){
@@ -128,12 +124,6 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     public void setRightOuttakeSpeed(double speed){
       rightOuttakeMotor.set(speed);
-    }
-
-
-    // Find Position Difference from Current Arm Position to Desired Position
-    public double getArmPositionDifference(double desiredPosition){
-      return (desiredPosition - armEncoder.getPosition());
     }
 
 
@@ -175,15 +165,15 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     public boolean armAtAMP(){
-      return (Math.abs(Constants.armAMPPosition)-Math.abs(armEncoder.getPosition()) < Constants.armTolerance);
+      return (Math.abs(Constants.armAMPPosition)-Math.abs(armEncoder.getPosition()) < Constants.armToleranceDisplay);
     }
 
     public boolean armAtOuttake(){
-      return (Math.abs(Constants.armOuttakePosition)-Math.abs(armEncoder.getPosition()) < Constants.armTolerance);
+      return (Math.abs(Constants.armOuttakePosition)-Math.abs(armEncoder.getPosition()) < Constants.armToleranceDisplay);
     }
 
     public boolean armAtIntake(){
-      return (Math.abs(Constants.armIntakePosition)-Math.abs(armEncoder.getPosition()) < Constants.armTolerance);
+      return (Math.abs(Constants.armIntakePosition)-Math.abs(armEncoder.getPosition()) < Constants.armToleranceDisplay);
     }
 
     public boolean canShootOuttake(){

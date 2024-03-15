@@ -23,6 +23,7 @@ public final class Constants {
   
   // Intake/Outtake Other
   public static long waitAfterShoot = 500;
+  public static double armToleranceDisplay = 2.5;
 
 
   // Intake/Outtake CAN
@@ -34,8 +35,8 @@ public final class Constants {
 
   // Intake/Outtake DIO
   public static int OuttakeBoreLeft = 1;
-  public static int OuttakeBoreRight = 3;
-  public static int IntakeLimitSwitch = 5;
+  public static int OuttakeBoreRight = 2;
+  public static int IntakeLimitSwitch = 4;
 
   // Arm 
   public static double armSpeed = 0.6;

@@ -33,6 +33,9 @@ public class OuttakeAndIntakeCommand extends Command {
       // Set PID
       m_outtakeAndIntakeSubsystem.setArmPID();
 
+      // Set Outtake Idle
+      m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineIdlePercent);
+
   }
 
 

@@ -160,7 +160,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     public void armStandStill(){
-      setOuttakeSpeed(0);
+      setOuttakeSpeed(Constants.redlineIdlePercent);
       armPIDController.setReference(armEncoder.getPosition(), CANSparkMax.ControlType.kPosition);    
     }
 

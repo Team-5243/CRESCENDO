@@ -30,11 +30,8 @@ public class OuttakeAndIntakeCommand extends Command {
       // Reset Motor
       m_outtakeAndIntakeSubsystem.resetMotors();
 
-      // Zero Arm Motor
-      m_outtakeAndIntakeSubsystem.zeroMotor();
-
       // Set PID
-      m_outtakeAndIntakeSubsystem.resetArmSetPos();
+      m_outtakeAndIntakeSubsystem.setArmPID();
 
   }
 

@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -19,7 +20,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     CANSparkMax rollerMotor;
     CANSparkMax armMotor;
     RelativeEncoder armEncoder;
-    PIDController armPIDcontroller;
+    SparkPIDController armPIDController;
 
 
     // Outtake
@@ -34,12 +35,12 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     DigitalInput throughBoreInputOuttakeRight;
     DutyCycleEncoder throughBoreEncoderOuttakeRight;
 
+
     public OuttakeAndIntakeSubsystem() {
         // Intake
         rollerMotor = new CANSparkMax(Constants.IntakeMotorRoller,  MotorType.kBrushed);
         armMotor = new CANSparkMax(Constants.IntakeMotorArm, MotorType.kBrushless);
         armEncoder = armMotor.getEncoder();
-        armPIDcontroller = new PIDController(Constants.armKp, Constants.armKi, Constants.armKd);
 
         intakeLimitSwitch = new DigitalInput(Constants.IntakeLimitSwitch);
 
@@ -52,15 +53,15 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
         throughBoreEncoderOuttakeLeft = new DutyCycleEncoder(throughBoreInputOuttakeLeft);
 
         // Right Outtake Bore
-        throughBoreInputOuttakeLeft = new DigitalInput(Constants.OuttakeBoreRight);
-        throughBoreEncoderOuttakeLeft = new DutyCycleEncoder(throughBoreInputOuttakeLeft);
+        throughBoreInputOuttakeRight = new DigitalInput(Constants.OuttakeBoreRight);
+        throughBoreEncoderOuttakeRight = new DutyCycleEncoder(throughBoreInputOuttakeRight);
     }
 
 
     // Resets
     public void resetEncoders(){
-      throughBoreEncoderOuttakeLeft.reset();
-      throughBoreEncoderOuttakeRight.reset();
+      // throughBoreEncoderOuttakeLeft.reset();
+      // throughBoreEncoderOuttakeRight.reset();
       armEncoder.setPosition(0);
     }
 
@@ -70,29 +71,16 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
         rightOuttakeMotor.clearFaults();
     }
 
-    public void zeroMotor(){
-        armEncoder.setPosition(0);
-    }
-
 
     // PID Tuning for Arm
-    // public void setArmPID(){
-    //     armMotor.setKP(Constants.armKp);
-    //     armMotor.setKI(Constants.armKi);
-    //     armMotor.setKD(Constants.armKd);
-    //     armMotor.setKF(Constants.armKf);
-    //     armMotor.setMaxAcceleration(Constants.armMaxA); VENOM
-    //     armMotor.setMaxSpeed(Constants.armMaxV);
-    // }
-
-    //  public void setPILimit(double speed){
-    //     armMotor.setMaxPILimit());
-    // }
-
-
-    // Reset Setpoint
-    public void resetArmSetPos(){    
-        armMotor.set(armPIDcontroller.calculate(armEncoder.getPosition(),0));
+    public void setArmPID(){
+      armEncoder.setPosition(0);
+      armPIDController= armMotor.getPIDController();
+      armPIDController.setP(Constants.armKp);
+      armPIDController.setI(Constants.armKi);
+      armPIDController.setD(Constants.armKd);
+      armPIDController.setIZone(Constants.armTolerance);
+      armPIDController.setOutputRange(Constants.armPMin, Constants.armPMax);
     }
 
 
@@ -121,6 +109,10 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     public void setArmSpeed(double speed){
         armMotor.set(speed);
+    }
+
+     public void setArmPIDSpeed(double speed){
+        //armPIDcontroller.set;
     }
 
 
@@ -153,29 +145,23 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     // Move Arm
     public void moveArmToIntake(){
-      System.out.println("Moving Arm to Intake");
-      // armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armIntakePosition)*4096);
-      armMotor.set(armPIDcontroller.calculate(armEncoder.getPosition(), Constants.armIntakePosition));
+      setOuttakeSpeed(Constants.redlineIdlePercent);
+      armPIDController.setReference(Constants.armIntakePosition, CANSparkMax.ControlType.kPosition);
     }
 
     public void moveArmToAmp(){
-      System.out.println("Moving Arm to AMP");
-      // armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armAMPPosition)*4096);
-      armMotor.set(armPIDcontroller.calculate(armEncoder.getPosition(), -Constants.armAMPPosition));
+      setOuttakeSpeed(Constants.redlineIdlePercent);
+      armPIDController.setReference(Constants.armAMPPosition, CANSparkMax.ControlType.kPosition);
     }
 
     public void moveArmToOuttake(){
-      System.out.println("Moving Arm to Outtake and Set Outtake Speed");
       setOuttakeSpeed(Constants.redlineOuttakePercent);
-      // armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armOuttakePosition)*4096);
-      armMotor.set(armPIDcontroller.calculate(armEncoder.getPosition(), Constants.armOuttakePosition));
+      armPIDController.setReference(Constants.armOuttakePosition, CANSparkMax.ControlType.kPosition);    
     }
 
     public void armStandStill(){
-      System.out.println("Moving Arm to Outtake and Set Outtake Speed");
-      setOuttakeSpeed(Constants.redlineOuttakePercent);
-      // armMotor.setCommand(ControlMode.PositionControl, getArmPositionDifference(Constants.armOuttakePosition)*4096);
-      armMotor.set(armPIDcontroller.calculate(armEncoder.getPosition(), armEncoder.getPosition()));
+      setOuttakeSpeed(0);
+      armPIDController.setReference(armEncoder.getPosition(), CANSparkMax.ControlType.kPosition);    
     }
 
 
@@ -237,9 +223,6 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
       SmartDashboard.putBoolean("At Outtake", armAtOuttake());
       SmartDashboard.putBoolean("Can Shoot", canShoot());
       SmartDashboard.putNumber("Arm Angle", armEncoder.getPosition());
-      System.out.println("Pos " + armEncoder.getPosition());
-      System.out.println("Speed " + armEncoder.getVelocity());
-      System.out.println("Error " + (Constants.armAMPPosition-armEncoder.getPosition()));
-      SmartDashboard.putNumber("Error", Constants.armAMPPosition-armEncoder.getPosition());
+      SmartDashboard.putNumber("Error", armEncoder.getPosition() - Constants.armAMPPosition);
     }
 }

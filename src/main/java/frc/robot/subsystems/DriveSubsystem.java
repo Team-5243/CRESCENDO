@@ -76,10 +76,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
   
 
-  public Command driveMethodCommand() {
+  public Command driveForwardCommand() {
     return runOnce(
         () -> {
-          /* one-time action goes here */
+          diffDrive.arcadeDrive(.5, 0);
         });
   }
 
@@ -145,7 +145,7 @@ public class DriveSubsystem extends SubsystemBase {
   // Get Encoder Data
   public boolean safetyCheck(){
     for (double value : getTemperature()){
-      if (value > 30){
+      if (value > 100){
         return true;
       }
     }

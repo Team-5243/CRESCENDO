@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 public final class AutonCommand {
   public static Command mainAuton(DriveSubsystem subsystem) {
-    return Commands.sequence(subsystem.driveMethodCommand(), new DriveCommand(subsystem));
+    return Commands.sequence(subsystem.driveForwardCommand(), new DriveCommand(subsystem));
   }
 
   private AutonCommand() {

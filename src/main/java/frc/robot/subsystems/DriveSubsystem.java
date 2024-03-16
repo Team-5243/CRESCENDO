@@ -76,7 +76,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
   
 
-  public Command driveForwardCommand() {
+  public Command driveCommand() {
     return runOnce(
         () -> {
           diffDrive.arcadeDrive(.5, 0);
@@ -103,6 +103,37 @@ public class DriveSubsystem extends SubsystemBase {
     fr.setBrakeCoastMode(CANVenom.BrakeCoastMode.Brake);
     bl.setBrakeCoastMode(CANVenom.BrakeCoastMode.Brake);
     br.setBrakeCoastMode(CANVenom.BrakeCoastMode.Brake);
+  }
+
+  // AUTON
+  public void driveForward() {
+    // double error = gyro.getYaw();
+    // if (error > tolerance) {
+    //   turnPower += 0.05;
+    // } else if (error < -tolerance) {
+    //   turnPower -= 0.05;
+    // }
+
+    // System.out.println(turnPower);
+    // System.out.println(gyro.getYaw());
+    // System.out.println();
+
+    // diffDrive.arcadeDrive(turnPower, -0.5);
+    diffDrive.tankDrive(.5 + gyro.getRate(), .5 - gyro.getRate());
+  }
+
+  public boolean turnToHeading(double heading) {
+    double yaw = gyro.getYaw();
+    if (yaw < heading - Constants.tolerance || yaw > heading + Constants.tolerance) {
+      diffDrive.arcadeDrive(((heading - yaw) / Math.abs(heading - yaw) / 3), 0);
+      return true;
+    }
+    return false;
+    
+  }
+
+  public void stopDrive(){
+    diffDrive.arcadeDrive(0, 0);
   }
 
 

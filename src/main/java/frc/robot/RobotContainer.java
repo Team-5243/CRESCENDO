@@ -17,6 +17,7 @@ public class RobotContainer {
   private final DriveCommand m_driveCommand = new DriveCommand(m_driveSubsystem);
   private final OuttakeAndIntakeSubsystem m_outtakeAndIntakeSubsystem = new OuttakeAndIntakeSubsystem();
   private final OuttakeAndIntakeCommand m_outtakeAndIntakeCommand = new OuttakeAndIntakeCommand(m_outtakeAndIntakeSubsystem);
+  private final AutonCommand m_autonCommand = new AutonCommand(m_driveSubsystem, m_outtakeAndIntakeSubsystem);
 
 
   public RobotContainer() {
@@ -25,6 +26,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return AutonCommand.mainAuton(m_driveSubsystem);
+    return m_autonCommand;
   }
 }

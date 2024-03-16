@@ -14,7 +14,7 @@ public final class Constants {
   public static double redlineLaunchPercent = 90;
   public static double redlineLaunchRPM = redlineTheoretialMaxRPM * (redlineLaunchPercent/100); 
 
-  public static double redlineIdlePercent = .32;
+  public static double redlineIdlePercent = 0;
   public static double redlineRollerInPercent = 0.5;
   public static double redlineRollerOutPercent = -0.4;
   public static double redlineRollerShootPercent = -0.6;
@@ -42,9 +42,12 @@ public final class Constants {
   public static double armSpeed = 0.6;
   public static double armGearRatio = 16;
 
-  public static double armIntakePosition = 0;
-  public static double armAMPPosition = 28;
-  public static double armOuttakePosition = 46;
+
+  // SET TO ZERO ON INSIDE BOT AT OUTTAKE POSITION
+  // SET TO INTAKE ON START
+  public static double armIntakePosition = -45.5;
+  public static double armAMPPosition = -19;
+  public static double armOuttakePosition = 0;
 
 
   // Arm PID
@@ -82,6 +85,8 @@ public final class Constants {
   public static double driveGearRatio = 8.46;
   public static double driveTrackWidth = 12;
   public static double mass = 0;
+
+  public static int tolerance = 3;
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;

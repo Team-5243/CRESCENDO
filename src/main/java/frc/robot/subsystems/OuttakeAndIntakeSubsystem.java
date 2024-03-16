@@ -165,23 +165,25 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     public boolean armAtAMP(){
-      return (Math.abs(Constants.armAMPPosition)-Math.abs(armEncoder.getPosition()) < Constants.armToleranceDisplay);
+      return (Math.abs(Constants.armAMPPosition-armEncoder.getPosition()) < Constants.armToleranceDisplay);
     }
 
     public boolean armAtOuttake(){
-      return (Math.abs(Constants.armOuttakePosition)-Math.abs(armEncoder.getPosition()) < Constants.armToleranceDisplay);
+      return (Math.abs(Constants.armOuttakePosition-armEncoder.getPosition()) < Constants.armToleranceDisplay);
     }
 
     public boolean armAtIntake(){
-      return (Math.abs(Constants.armIntakePosition)-Math.abs(armEncoder.getPosition()) < Constants.armToleranceDisplay);
+      return (Math.abs(Constants.armIntakePosition-armEncoder.getPosition()) < Constants.armToleranceDisplay);
     }
 
     public boolean canShootOuttake(){
-      return (armAtOuttake() && atLaunchRPM() && intakeHasRing());
+      // return (armAtOuttake() && atLaunchRPM() && intakeHasRing());
+      return (armAtOuttake() && atLaunchRPM());
     }
 
     public boolean canShootAMP(){
-      return (armAtAMP() && intakeHasRing());
+      // return (armAtAMP() && intakeHasRing());
+      return (armAtAMP());
     }
 
     public boolean canShoot(){
@@ -189,20 +191,30 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
 
-    // Shooting
-    public boolean shoot(){
-      if (canShootAMP()){
+    // Shooting Outtake
+    public void shootOuttake(){
         setRollerSpeed(Constants.redlineRollerShootPercent);
-        return true;
-      }
-
-      else if (canShootOuttake()){
-        setRollerSpeed(Constants.redlineRollerOutPercent);
-        return true;
-      }
-
-      return false;
     }
+
+    public void shootAMP(){
+        setRollerSpeed(Constants.redlineRollerOutPercent);
+    }
+
+
+    // Shooting
+    // public boolean shoot(){
+    //   if (canShootAMP()){
+    //     setRollerSpeed(Constants.redlineRollerShootPercent);
+    //     return true;
+    //   }
+
+    //   else if (canShootOuttake()){
+    //     setRollerSpeed(Constants.redlineRollerOutPercent);
+    //     return true;
+    //   }
+
+    //   return false;
+    // }
 
 
     @Override
@@ -211,8 +223,5 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
       SmartDashboard.putBoolean("At Intake", armAtIntake());
       SmartDashboard.putBoolean("At Amp", armAtAMP());
       SmartDashboard.putBoolean("At Outtake", armAtOuttake());
-      SmartDashboard.putBoolean("Can Shoot", canShoot());
-      SmartDashboard.putNumber("Arm Angle", armEncoder.getPosition());
-      SmartDashboard.putNumber("Error", armEncoder.getPosition() - Constants.armAMPPosition);
     }
 }

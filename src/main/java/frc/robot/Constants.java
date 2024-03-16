@@ -17,7 +17,7 @@ public final class Constants {
   public static double redlineIdlePercent = 0;
   public static double redlineRollerInPercent = 0.5;
   public static double redlineRollerOutPercent = -0.4;
-  public static double redlineRollerShootPercent = -0.6;
+  public static double redlineRollerShootPercent = -0.9;
   public static double redlineOuttakePercent = 1;
 
   
@@ -46,7 +46,7 @@ public final class Constants {
   // SET TO ZERO ON INSIDE BOT AT OUTTAKE POSITION
   // SET TO INTAKE ON START
   public static double armIntakePosition = -45.5;
-  public static double armAMPPosition = -19;
+  public static double armAMPPosition = -21;
   public static double armOuttakePosition = 0;
 
 

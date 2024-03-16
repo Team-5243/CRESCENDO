@@ -135,23 +135,15 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     // Move Arm
     public void moveArmToIntake(){
-      setOuttakeSpeed(Constants.redlineIdlePercent);
       armPIDController.setReference(Constants.armIntakePosition, CANSparkMax.ControlType.kPosition);
     }
 
     public void moveArmToAmp(){
-      setOuttakeSpeed(Constants.redlineIdlePercent);
       armPIDController.setReference(Constants.armAMPPosition, CANSparkMax.ControlType.kPosition);
     }
 
     public void moveArmToOuttake(){
-      setOuttakeSpeed(Constants.redlineOuttakePercent);
       armPIDController.setReference(Constants.armOuttakePosition, CANSparkMax.ControlType.kPosition);    
-    }
-
-    public void armStandStill(){
-      setOuttakeSpeed(Constants.redlineIdlePercent);
-      armPIDController.setReference(armEncoder.getPosition(), CANSparkMax.ControlType.kPosition);    
     }
 
 

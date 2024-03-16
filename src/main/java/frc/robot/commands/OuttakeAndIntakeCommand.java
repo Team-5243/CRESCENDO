@@ -32,39 +32,41 @@ public class OuttakeAndIntakeCommand extends Command {
 
       // Set PID
       m_outtakeAndIntakeSubsystem.setArmPID();
-
-      // Set Outtake Idle
-      m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineIdlePercent);
-
-      // Move to Intake
-      m_outtakeAndIntakeSubsystem.moveArmToIntake();
-  }
+    }
 
 
   @Override
   public void execute() {
 
-    // Stop All Actions for Constants.waitAfterShoot time after a shot
-    if (timeOfShot != 0 && timeOfShot + Constants.waitAfterShoot <= System.currentTimeMillis()){
-        return;
+    // // Stop All Actions for Constants.waitAfterShoot time after a shot
+    // if (timeOfShot != 0 && timeOfShot + Constants.waitAfterShoot <= System.currentTimeMillis()){
+    //     return;
+    // }
+
+    // // After waiting the time
+    // if (timeOfShot > 0){
+    //     m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineIdlePercent);
+    //     m_outtakeAndIntakeSubsystem.setRollerSpeed(0);
+    //     timeOfShot = 0;
+    // }
+    
+    if (m_outtakeAndIntakeSubsystem.armAtOuttake()){
+        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineOuttakePercent);
+    }
+    else { 
+      m_outtakeAndIntakeSubsystem.setOuttakeSpeed(0);
     }
 
-    // After waiting the time
-    if (timeOfShot > 0){
-        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineIdlePercent);
-        m_outtakeAndIntakeSubsystem.setRollerSpeed(0);
-        timeOfShot = 0;
-    }
-    
-    // Shoot
+    // Shoot Outtake
     if (Constants.secondStick.getRawButton(1)){
         m_outtakeAndIntakeSubsystem.shootOuttake();
-        timeOfShot = System.currentTimeMillis();
+        // timeOfShot = System.currentTimeMillis();
     }
 
+    // Shoot AMP
     if (Constants.secondStick.getRawButton(4)){
         m_outtakeAndIntakeSubsystem.shootAMP();
-        timeOfShot = System.currentTimeMillis();
+        // timeOfShot = System.currentTimeMillis();
     }
 
     // Spin Intake Rollers
@@ -73,7 +75,7 @@ public class OuttakeAndIntakeCommand extends Command {
     }
 
     else if (Constants.secondStick.getRawButton(4) || Constants.secondStick.getRawButton(1)){
-        System.out.println("passing");  
+        System.out.println("No Action");  
     }
 
     else {
@@ -93,10 +95,6 @@ public class OuttakeAndIntakeCommand extends Command {
     else if (Constants.secondStick.getRawButton(6)) {
         m_outtakeAndIntakeSubsystem.moveArmToOuttake();
     } 
-    
-    else {
-        m_outtakeAndIntakeSubsystem.armStandStill();
-    }
   }
   
   @Override

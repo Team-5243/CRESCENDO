@@ -8,6 +8,7 @@ import com.playingwithfusion.CANVenom;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -113,10 +114,6 @@ public class DriveSubsystem extends SubsystemBase {
     // } else if (error < -tolerance) {
     //   turnPower -= 0.05;
     // }
-
-    // System.out.println(turnPower);
-    // System.out.println(gyro.getYaw());
-    // System.out.println();
 
     // diffDrive.arcadeDrive(turnPower, -0.5);
     diffDrive.tankDrive(.5 + gyro.getRate(), .5 - gyro.getRate());

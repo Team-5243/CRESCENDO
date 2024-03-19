@@ -40,8 +40,7 @@ public final class Constants {
   public static double armGearRatio = 16;
 
 
-  // SET TO ZERO ON INSIDE BOT AT OUTTAKE POSITION
-  // SET TO INTAKE ON START
+  // Arm Positions
   public static double armIntakePosition = -45.5;
   public static double armAMPPosition = -19.5;
   public static double armOuttakePosition = 0;
@@ -83,7 +82,22 @@ public final class Constants {
   public static double driveTrackWidth = 12;
   public static double mass = 0;
 
-  public static int tolerance = 3;
+
+  // Limelight:
+  public static final double maxRVP = 0.27;
+  public static final double minRVP = 0.22;
+  public static final double dRVP = 50;
+  public static final double limelightTolerance = 2;
+  public static final double maxSpeakerTY = -9.5;
+  public static final double minSpeakerTY = -10.5;
+  public static final String limelight1 = "limelight";
+  public static final String limelight2 = "limelight-two";
+  public static final int redSpeakerID = 4;
+  public static final int blueSpeakerID = 8;
+  public static final int redAmpID = 5;
+  public static final int blueAmpID = 6;
+  public static final int drivePipelineID = 0;
+  public static final int visionPipelineID = 1;
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;

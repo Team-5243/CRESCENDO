@@ -8,7 +8,7 @@ import java.lang.*;
 public class OuttakeAndIntakeCommand extends Command {
     
   // Variables
-  long timeOfShot;
+  // NONE
 
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final OuttakeAndIntakeSubsystem m_outtakeAndIntakeSubsystem;
@@ -22,7 +22,7 @@ public class OuttakeAndIntakeCommand extends Command {
   @Override
   public void initialize() {
       // Variables
-      timeOfShot = 0;
+      // NONE
 
       // Reset Encoders
       m_outtakeAndIntakeSubsystem.resetEncoders();
@@ -37,61 +37,55 @@ public class OuttakeAndIntakeCommand extends Command {
 
   @Override
   public void execute() {
-
-    // // Stop All Actions for Constants.waitAfterShoot time after a shot
-    // if (timeOfShot != 0 && timeOfShot + Constants.waitAfterShoot <= System.currentTimeMillis()){
-    //     return;
-    // }
-
-    // // After waiting the time
-    // if (timeOfShot > 0){
-    //     m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineIdlePercent);
-    //     m_outtakeAndIntakeSubsystem.setRollerSpeed(0);
-    //     timeOfShot = 0;
-    // }
     
-    if (m_outtakeAndIntakeSubsystem.armAtOuttake()){
-        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(Constants.redlineOuttakePercent);
-    }
-    else { 
-      m_outtakeAndIntakeSubsystem.setOuttakeSpeed(0);
-    }
-
-    // Shoot Outtake
-    if (Constants.secondStick.getRawButton(1)){
-        m_outtakeAndIntakeSubsystem.shootOuttake();
-        // timeOfShot = System.currentTimeMillis();
-    }
-
-    // Shoot AMP
-    if (Constants.secondStick.getRawButton(4)){
-        m_outtakeAndIntakeSubsystem.shootAMP();
-        // timeOfShot = System.currentTimeMillis();
-    }
-
-    // Spin Intake Rollers
-    if (Constants.secondStick.getRawButton(2)){
+    // (Trigger - Main Stick) --> Intake Ring
+    if (Constants.mainStick.getRawButton(1)){
         m_outtakeAndIntakeSubsystem.setRollerSpeed(Constants.redlineRollerInPercent);
+    } 
+    
+    // (Button 3 - Main Stick) --> Unjam Intake
+    // else if (Constants.mainStick.getRawButton(3)){
+    //     m_outtakeAndIntakeSubsystem.setRollerSpeed(-Constants.redlineRollerInPercent);
+    // } 
+    
+    // (Button 3 - Main Stick) --> Shoot AMP/Unjam Intake
+    else if (Constants.secondStick.getRawButton(4)) {
+        m_outtakeAndIntakeSubsystem.shootAMP();
     }
 
-    else if (Constants.secondStick.getRawButton(4) || Constants.secondStick.getRawButton(1)){
-        System.out.println("No Action");  
+    // (Trigger - Second Stick) --> Shoot Speaker
+    else if (Constants.secondStick.getRawButton(1)) {
+        m_outtakeAndIntakeSubsystem.shootOuttake();
     }
 
+    // (No Roller Related Button) --> Disable Motor
     else {
         m_outtakeAndIntakeSubsystem.setRollerSpeed(0);
     }
 
 
-    // Button Controls for Arm (SET POSITION)
+    // (Side - Second Stick) --> Ramp Outtake
+    if (Constants.secondStick.getRawButton(2)){
+        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(-Constants.outtakeMaxSpeed);
+    } 
+    
+    // (No Outtake Related Button) --> Disable Motor
+    else {
+        m_outtakeAndIntakeSubsystem.setOuttakeSpeed(0);
+    }
+
+
+    // (Button 5 - Second Stick) --> Move Arm to Intake
     if (Constants.secondStick.getRawButton(5)){
         m_outtakeAndIntakeSubsystem.moveArmToIntake();
     } 
     
+    // (Button 3 - Second Stick) --> Move Arm to AMP
     else if (Constants.secondStick.getRawButton(3)){
         m_outtakeAndIntakeSubsystem.moveArmToAmp();
     }
 
+    // (Button 6 - Second Stick) --> Move Arm to Outtake
     else if (Constants.secondStick.getRawButton(6)) {
         m_outtakeAndIntakeSubsystem.moveArmToOuttake();
     } 

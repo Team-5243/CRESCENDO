@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 
 import com.playingwithfusion.CANVenom;
-
+import com.playingwithfusion.CANVenom.ControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -19,6 +19,8 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,7 +35,9 @@ public class DriveSubsystem extends SubsystemBase {
   public CANVenom fr;
   public CANVenom bl;
   public CANVenom br;
-  public DifferentialDrive diffDrive;
+  public DifferentialDrive diffDriveFront;
+  public DifferentialDrive diffDriveBack;
+  // public DifferentialDrive diffDrive;
   public AHRS gyro;
   
   public DifferentialDrivePoseEstimator drivePoseEstimator;
@@ -47,13 +51,19 @@ public class DriveSubsystem extends SubsystemBase {
     fr = new CANVenom(Constants.FR);
     bl = new CANVenom(Constants.BL);
     br = new CANVenom(Constants.BR);
-
+    
+    
     // Set CANVenom to Follow Mode
-    bl.follow(fl);
-    br.follow(fr);
+    // bl.setControlMode(ControlMode.FollowTheLeader);
+    // br.setControlMode(ControlMode.FollowTheLeader);
+    // diffDrive = new DifferentialDrive(fl, fr);
+    // bl.follow(fl);
+    // br.follow(fr);
+  
 
     // Create Differential Drive with leading CANVenoms
-    diffDrive = new DifferentialDrive(fl, fr);
+    diffDriveFront = new DifferentialDrive(fl, fr);
+    diffDriveBack = new DifferentialDrive(bl, br);
 
     // Set Break or Coast Mode
     setBreakMode();
@@ -77,18 +87,25 @@ public class DriveSubsystem extends SubsystemBase {
   }
   
 
+  // Run Command Once
   public Command driveCommand() {
     return runOnce(
         () -> {
-          diffDrive.arcadeDrive(.5, 0);
+
         });
   }
 
 
-  // Arcade Drive Using Joysticks
+  // Arcade Drive Using Joysticks (Double Diff Drive)
   public void arcadeDrive(double speed, double rotation){
-    diffDrive.arcadeDrive(speed, rotation);
+    diffDriveFront.arcadeDrive(speed, rotation);
+    diffDriveBack.arcadeDrive(speed, rotation);
   } 
+
+  // Arcade Drive Using Joysticks (Single Diff Drive)
+  // public void arcadeDrive(double speed, double rotation){
+  //   diffDrive.arcadeDrive(speed, rotation);
+  // } 
 
 
   // Drive Commands
@@ -104,33 +121,6 @@ public class DriveSubsystem extends SubsystemBase {
     fr.setBrakeCoastMode(CANVenom.BrakeCoastMode.Brake);
     bl.setBrakeCoastMode(CANVenom.BrakeCoastMode.Brake);
     br.setBrakeCoastMode(CANVenom.BrakeCoastMode.Brake);
-  }
-
-  // AUTON
-  public void driveForward() {
-    // double error = gyro.getYaw();
-    // if (error > tolerance) {
-    //   turnPower += 0.05;
-    // } else if (error < -tolerance) {
-    //   turnPower -= 0.05;
-    // }
-
-    // diffDrive.arcadeDrive(turnPower, -0.5);
-    diffDrive.tankDrive(.5 + gyro.getRate(), .5 - gyro.getRate());
-  }
-
-  public boolean turnToHeading(double heading) {
-    double yaw = gyro.getYaw();
-    if (yaw < heading - Constants.tolerance || yaw > heading + Constants.tolerance) {
-      diffDrive.arcadeDrive(((heading - yaw) / Math.abs(heading - yaw) / 3), 0);
-      return true;
-    }
-    return false;
-    
-  }
-
-  public void stopDrive(){
-    diffDrive.arcadeDrive(0, 0);
   }
 
 
@@ -170,17 +160,6 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 
-  // Get Encoder Data
-  public boolean safetyCheck(){
-    for (double value : getTemperature()){
-      if (value > 100){
-        return true;
-      }
-    }
-    return false;
-  }
-
-
   @Override
   public void periodic() {
     // Pose Estimation
@@ -188,7 +167,5 @@ public class DriveSubsystem extends SubsystemBase {
     // drivePoseEstimator.addVisionMeasurement(null, 0);
     field.setRobotPose(drivePoseEstimator.getEstimatedPosition());
 
-    // SmartDashboard Safety Check
-    SmartDashboard.putBoolean("Safe?", safetyCheck());
   };
 }

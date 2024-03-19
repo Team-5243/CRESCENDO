@@ -9,17 +9,14 @@ public final class Constants {
   public static Joystick secondStick = new Joystick(1);
 
 
-  // Redline Settings
-  public static int redlineTheoretialMaxRPM = 21000;
-  public static double redlineLaunchPercent = 90;
-  public static double redlineLaunchRPM = redlineTheoretialMaxRPM * (redlineLaunchPercent/100); 
+  // Intake Redline Settings
+  public static double redlineRollerInPercent = -0.7;
+  public static double redlineRollerOutPercent = 0.6;
+  public static double redlineRollerShootPercent = 0.6;
 
-  public static double redlineIdlePercent = 0;
-  public static double redlineRollerInPercent = 0.5;
-  public static double redlineRollerOutPercent = -0.4;
-  public static double redlineRollerShootPercent = -0.9;
-  public static double redlineOuttakePercent = 1;
-
+  // Outtake NEO Settings
+  public static double outtakeMaxSpeed = .52;
+  public static double outtakeMinimumLaunchSpeed = 1;
   
   // Intake/Outtake Other
   public static long waitAfterShoot = 500;
@@ -34,8 +31,8 @@ public final class Constants {
 
 
   // Intake/Outtake DIO
-  public static int OuttakeBoreLeft = 1;
-  public static int OuttakeBoreRight = 2;
+  public static int OuttakeBore = 0;
+  public static int ArmBore = 2;
   public static int IntakeLimitSwitch = 4;
 
   // Arm 
@@ -46,7 +43,7 @@ public final class Constants {
   // SET TO ZERO ON INSIDE BOT AT OUTTAKE POSITION
   // SET TO INTAKE ON START
   public static double armIntakePosition = -45.5;
-  public static double armAMPPosition = -21;
+  public static double armAMPPosition = -19.5;
   public static double armOuttakePosition = 0;
 
 

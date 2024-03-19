@@ -4,8 +4,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
@@ -22,6 +22,9 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     RelativeEncoder armEncoder;
     SparkPIDController armPIDController;
 
+    DigitalInput throughBoreInputArm;
+    DutyCycleEncoder throughBoreEncoderArm;
+
 
     // Outtake
     CANSparkMax leftOuttakeMotor;
@@ -29,39 +32,39 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     DigitalInput intakeLimitSwitch;
 
-    DigitalInput throughBoreInputOuttakeLeft;
-    DutyCycleEncoder throughBoreEncoderOuttakeLeft;
-
-    DigitalInput throughBoreInputOuttakeRight;
-    DutyCycleEncoder throughBoreEncoderOuttakeRight;
+    DigitalInput throughBoreInputOuttake;
+    DutyCycleEncoder throughBoreEncoderOuttake;
 
 
     public OuttakeAndIntakeSubsystem() {
         // Intake
-        rollerMotor = new CANSparkMax(Constants.IntakeMotorRoller,  MotorType.kBrushed);
+        rollerMotor = new CANSparkMax(Constants.IntakeMotorRoller,  MotorType.kBrushless);
         armMotor = new CANSparkMax(Constants.IntakeMotorArm, MotorType.kBrushless);
         armEncoder = armMotor.getEncoder();
 
         intakeLimitSwitch = new DigitalInput(Constants.IntakeLimitSwitch);
 
         // Outtake
-        leftOuttakeMotor = new CANSparkMax(Constants.OuttakeMotorLeft, MotorType.kBrushed);
-        rightOuttakeMotor = new CANSparkMax(Constants.OuttakeMotorRight,  MotorType.kBrushed);
+        leftOuttakeMotor = new CANSparkMax(Constants.OuttakeMotorLeft, MotorType.kBrushless);
+        rightOuttakeMotor = new CANSparkMax(Constants.OuttakeMotorRight,  MotorType.kBrushless);
 
-        // Left Outtake Bore
-        throughBoreInputOuttakeLeft = new DigitalInput(Constants.OuttakeBoreLeft);
-        throughBoreEncoderOuttakeLeft = new DutyCycleEncoder(throughBoreInputOuttakeLeft);
+        leftOuttakeMotor.setIdleMode(IdleMode.kCoast);
+        rightOuttakeMotor.setIdleMode(IdleMode.kCoast);
 
-        // Right Outtake Bore
-        throughBoreInputOuttakeRight = new DigitalInput(Constants.OuttakeBoreRight);
-        throughBoreEncoderOuttakeRight = new DutyCycleEncoder(throughBoreInputOuttakeRight);
+        // Outtake Bore
+        throughBoreInputOuttake = new DigitalInput(Constants.OuttakeBore);
+        throughBoreEncoderOuttake = new DutyCycleEncoder(throughBoreInputOuttake);
+
+        // Arm Bore
+        throughBoreInputArm = new DigitalInput(Constants.ArmBore);
+        throughBoreEncoderArm = new DutyCycleEncoder(throughBoreInputArm);
     }
 
 
     // Resets
     public void resetEncoders(){
-      throughBoreEncoderOuttakeLeft.reset();
-      throughBoreEncoderOuttakeRight.reset();
+      throughBoreEncoderOuttake.reset();
+      throughBoreEncoderArm.reset();
       armEncoder.setPosition(0);
     }
 
@@ -85,8 +88,8 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
 
     // Accessor Methods
-    public Double[] getOuttakeRPM(){
-        return new Double[] {throughBoreEncoderOuttakeLeft.getDistance(), throughBoreEncoderOuttakeRight.getDistance()};
+    public double getOuttakeRPM(){
+        return throughBoreEncoderOuttake.get();
     }
 
     public double getIntakeSpeed(){
@@ -149,8 +152,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     // Conditionals
     public boolean atLaunchRPM(){
-      Double[] speeds = getOuttakeRPM();
-      if (Math.abs(speeds[0]) >= Constants.redlineLaunchRPM && Math.abs(speeds[1]) >= Constants.redlineLaunchRPM){
+      if (Math.abs(getOuttakeRPM()) >= Constants.outtakeMinimumLaunchSpeed){
           return true;
       }
       return false;
@@ -169,12 +171,10 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
     }
 
     public boolean canShootOuttake(){
-      // return (armAtOuttake() && atLaunchRPM() && intakeHasRing());
       return (armAtOuttake() && atLaunchRPM());
     }
 
     public boolean canShootAMP(){
-      // return (armAtAMP() && intakeHasRing());
       return (armAtAMP());
     }
 
@@ -185,28 +185,14 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
 
     // Shooting Outtake
     public void shootOuttake(){
-        setRollerSpeed(Constants.redlineRollerShootPercent);
-    }
-
-    public void shootAMP(){
         setRollerSpeed(Constants.redlineRollerOutPercent);
     }
 
 
-    // Shooting
-    // public boolean shoot(){
-    //   if (canShootAMP()){
-    //     setRollerSpeed(Constants.redlineRollerShootPercent);
-    //     return true;
-    //   }
-
-    //   else if (canShootOuttake()){
-    //     setRollerSpeed(Constants.redlineRollerOutPercent);
-    //     return true;
-    //   }
-
-    //   return false;
-    // }
+    // Shooting AMP
+    public void shootAMP(){
+        setRollerSpeed(Constants.redlineRollerShootPercent);
+    }
 
 
     @Override
@@ -215,5 +201,7 @@ public class OuttakeAndIntakeSubsystem extends SubsystemBase {
       SmartDashboard.putBoolean("At Intake", armAtIntake());
       SmartDashboard.putBoolean("At Amp", armAtAMP());
       SmartDashboard.putBoolean("At Outtake", armAtOuttake());
+      SmartDashboard.putNumber("Arm Position", armEncoder.getPosition());
+      SmartDashboard.putBoolean("Shoot", canShoot());
     }
 }

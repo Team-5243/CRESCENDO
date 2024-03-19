@@ -52,7 +52,7 @@ public class DriveSubsystem extends SubsystemBase {
     bl = new CANVenom(Constants.BL);
     br = new CANVenom(Constants.BR);
     
-    
+
     // Set CANVenom to Follow Mode
     // bl.setControlMode(ControlMode.FollowTheLeader);
     // br.setControlMode(ControlMode.FollowTheLeader);
@@ -166,6 +166,12 @@ public class DriveSubsystem extends SubsystemBase {
     drivePoseEstimator.update(new Rotation2d(gyro.getAngle()), getMeters(fl), getMeters(fr));
     // drivePoseEstimator.addVisionMeasurement(null, 0);
     field.setRobotPose(drivePoseEstimator.getEstimatedPosition());
+
+    SmartDashboard.putNumber("FL", fl.getSpeed());
+    SmartDashboard.putNumber("FR", fr.getSpeed());
+    SmartDashboard.putNumber("BL", bl.getSpeed());
+    SmartDashboard.putNumber("BR", br.getSpeed());
+
 
   };
 }

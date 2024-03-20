@@ -9,11 +9,11 @@ import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 
 
-public class DriveCommand extends Command {
+public class Drive extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
 
-  public DriveCommand(DriveSubsystem subsystem) {
+  public Drive(DriveSubsystem subsystem) {
     m_driveSubsystem = subsystem;
     addRequirements(subsystem);
   }

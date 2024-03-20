@@ -10,11 +10,11 @@ import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
-public class LimelightCommand extends Command {
+public class Limelight extends Command {
     public DriveSubsystem m_driveSubsystem;
     private LimelightSubsystem m_limelightSubsystem;
 
-    public LimelightCommand(LimelightSubsystem subsystem, DriveSubsystem driveSubsystem) {
+    public Limelight(LimelightSubsystem subsystem, DriveSubsystem driveSubsystem) {
         m_driveSubsystem = driveSubsystem;
         m_limelightSubsystem = subsystem;
         

@@ -37,7 +37,6 @@ public class DriveSubsystem extends SubsystemBase {
   public CANVenom br;
   public DifferentialDrive diffDriveFront;
   public DifferentialDrive diffDriveBack;
-  // public DifferentialDrive diffDrive;
   public AHRS gyro;
   
   public DifferentialDrivePoseEstimator drivePoseEstimator;
@@ -51,14 +50,6 @@ public class DriveSubsystem extends SubsystemBase {
     fr = new CANVenom(Constants.FR);
     bl = new CANVenom(Constants.BL);
     br = new CANVenom(Constants.BR);
-    
-
-    // Set CANVenom to Follow Mode
-    // bl.setControlMode(ControlMode.FollowTheLeader);
-    // br.setControlMode(ControlMode.FollowTheLeader);
-    // diffDrive = new DifferentialDrive(fl, fr);
-    // bl.follow(fl);
-    // br.follow(fr);
   
 
     // Create Differential Drive with leading CANVenoms
@@ -68,7 +59,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Set Break or Coast Mode
     setBreakMode();
 
-    // Reset Encoders
+    // Resets
     resetEncoders();
 
     // Create Gyro
@@ -85,15 +76,6 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putData(field);
 
   }
-  
-
-  // Run Command Once
-  public Command driveCommand() {
-    return runOnce(
-        () -> {
-
-        });
-  }
 
 
   // Arcade Drive Using Joysticks (Double Diff Drive)
@@ -101,11 +83,6 @@ public class DriveSubsystem extends SubsystemBase {
     diffDriveFront.arcadeDrive(speed, rotation);
     diffDriveBack.arcadeDrive(speed, rotation);
   } 
-
-  // Arcade Drive Using Joysticks (Single Diff Drive)
-  // public void arcadeDrive(double speed, double rotation){
-  //   diffDrive.arcadeDrive(speed, rotation);
-  // } 
 
 
   // Drive Commands

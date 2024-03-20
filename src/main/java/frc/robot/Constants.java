@@ -9,14 +9,13 @@ public final class Constants {
   public static Joystick secondStick = new Joystick(1);
 
 
-  // Intake Redline Settings
-  public static double redlineRollerInPercent = -0.7;
-  public static double redlineRollerOutPercent = 0.6;
-  public static double redlineRollerShootPercent = 0.6;
+  // Intake Settings
+  public static double rollerIntakeNote = -0.7;
+  public static double rollerOutputNote = 0.6;
+  public static double rollerShootNote = 0.6;
 
   // Outtake NEO Settings
-  public static double outtakeMaxSpeed = .52;
-  public static double outtakeMinimumLaunchSpeed = 1;
+  public static double outtakeSpeed = .52;
   
   // Intake/Outtake Other
   public static long waitAfterShoot = 500;
@@ -41,9 +40,9 @@ public final class Constants {
 
 
   // Arm Positions
-  public static double armIntakePosition = -45.5;
+  public static double armGroundPosition = -45.5;
   public static double armAMPPosition = -19.5;
-  public static double armOuttakePosition = 0;
+  public static double armShooterPosition = 0;
 
 
   // Arm PID

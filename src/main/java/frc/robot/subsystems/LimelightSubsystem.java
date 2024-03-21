@@ -10,13 +10,16 @@ import frc.robot.util.LimelightHelpers;
 
 public class LimelightSubsystem extends SubsystemBase {
     
-    public double ty = 0;
-    public double xSpeed = 0;
-    public double forwardSpeed = 0;
-    public boolean visionMode = false;
+    public double ty;
+    public double xSpeed;
+    public double forwardSpeed;
+    public boolean visionMode;
 
     public LimelightSubsystem() {
-
+      ty = 0;
+      xSpeed = 0;
+      forwardSpeed = 0;
+      visionMode = false;
     }
 
     /**

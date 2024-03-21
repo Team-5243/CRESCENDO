@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -18,7 +19,7 @@ public class Auton extends Command {
   public ArmSubsystem arm;
   public ShooterSubsystem shooter;
   public DriveSubsystem drive;
-  public Timer time = new Timer();
+  private Timer autoTime = new Timer();
 
 
   public Auton(DriveSubsystem drive, ArmSubsystem arm, RollerSubsystem roller, ShooterSubsystem shooter) {
@@ -31,28 +32,30 @@ public class Auton extends Command {
 
   @Override
   public void initialize() {
-    time.restart();
+    this.autoTime.restart();
   }
 
   @Override
   public void execute() {
-    if (time.get() < 2){
-      shooter.setSpeed(-Constants.outtakeSpeed);
+    SmartDashboard.putNumber("timer", this.autoTime.get());
+    if (this.autoTime.get() < 2){
+      shooter.setSpeed(Constants.outtakeSpeed);
     }
 
-    else if (time.get() < 3.5) {
+    else if (this.autoTime.get() < 3.5) {
       roller.setSpeed(Constants.rollerOutputNote);
     }
 
     else {
-      roller.setSpeed(0);
-      shooter.setSpeed(0);
-
+      roller.stop();
+      shooter.stop();
     }
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+  }
 
   @Override
   public boolean isFinished() {

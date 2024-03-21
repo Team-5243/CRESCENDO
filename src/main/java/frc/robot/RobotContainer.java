@@ -13,10 +13,12 @@ import frc.robot.commands.ArmToShooter;
 import frc.robot.commands.Auton;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeNote;
+import frc.robot.commands.Limelight;
 import frc.robot.commands.ShootAMP;
 import frc.robot.commands.ShootSpeaker;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -29,23 +31,25 @@ public class RobotContainer {
   private final RollerSubsystem m_RollerSubsystem = new RollerSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
 
-  private final Auton m_autonCommand = new Auton(m_driveSubsystem, m_ArmSubsystem, m_RollerSubsystem, m_ShooterSubsystem);
+  private final LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
+  private final Limelight m_Limelight = new Limelight(m_LimelightSubsystem, m_driveSubsystem);
 
-  Trigger sideButton = new JoystickButton(Constants.secondStick, 2);
+  private final Auton m_autonCommand = new Auton(m_driveSubsystem, m_ArmSubsystem, m_RollerSubsystem, m_ShooterSubsystem);
 
 
   public RobotContainer() {
     m_driveSubsystem.setDefaultCommand(m_driveCommand);
+    m_LimelightSubsystem.setDefaultCommand(m_Limelight);
     configureBindings();
   }
 
   private void configureBindings() {
     
     new JoystickButton(Constants.secondStick, 2)
-        .whileTrue(new IntakeNote(m_RollerSubsystem));
+        .onTrue(new IntakeNote(m_RollerSubsystem));
 
     new JoystickButton(Constants.secondStick, 1)
-        .whileTrue(new ShootSpeaker(m_RollerSubsystem, m_ShooterSubsystem));
+        .onTrue(new ShootSpeaker(m_RollerSubsystem, m_ShooterSubsystem));
 
     new JoystickButton(Constants.secondStick, 5)
         .whileTrue(new ArmToGround(m_ArmSubsystem));

@@ -10,9 +10,9 @@ public final class Constants {
 
 
   // Intake Settings
-  public static double rollerIntakeNote = -0.7;
-  public static double rollerOutputNote = 0.6;
-  public static double rollerShootNote = 0.6;
+  public static double rollerIntakeNote = 0.7;
+  public static double rollerOutputNote = -0.6;
+  public static double rollerShootNote = -0.6;
 
   // Outtake NEO Settings
   public static double outtakeSpeed = -.52;
@@ -83,8 +83,8 @@ public final class Constants {
 
 
   // Limelight:
-  public static final double maxRVP = 0.27;
-  public static final double minRVP = 0.22;
+  public static final double maxRVP = 0.55;
+  public static final double minRVP = 0.5;
   public static final double dRVP = 50;
   public static final double limelightTolerance = 2;
   public static final double maxSpeakerTY = -9.5;

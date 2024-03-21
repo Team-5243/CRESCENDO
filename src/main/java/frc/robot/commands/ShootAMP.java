@@ -12,23 +12,24 @@ import frc.robot.subsystems.RollerSubsystem;
 public class ShootAMP extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final RollerSubsystem roller;
-  private Timer time = new Timer();
+  private Timer time;
 
   public ShootAMP(RollerSubsystem roller) {
     this.roller = roller;
     addRequirements(roller);
+    this.time = new Timer();
   }
 
 
   @Override
   public void initialize() {
-    time.restart();
+    this.time.restart();
   }
 
 
   @Override
   public void execute() {
-    if (time.get() < .6){
+    if (this.time.get() < .6){
         roller.setSpeed(Constants.rollerShootNote);
     }
   }
@@ -42,6 +43,6 @@ public class ShootAMP extends Command {
 
   @Override
   public boolean isFinished() {
-    return (time.get() > .6);
+    return (this.time.get() > .6);
   }
 }

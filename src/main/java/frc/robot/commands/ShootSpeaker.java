@@ -20,23 +20,23 @@ public class ShootSpeaker extends Command {
     this.roller = roller;
     this.shooter = shooter;
     addRequirements(roller, shooter);
-    time = new Timer();
+    this.time = new Timer();
   }
 
 
 @Override
   public void initialize() {
-    time.restart();
+    this.time.restart();
   }
 
 
   @Override
   public void execute() {
-    if (time.get() < 2){
+    if (this.time.get() < 2){
         shooter.setSpeed(Constants.outtakeSpeed);
     }
 
-    else if (time.get() < 2.5) {
+    else if (this.time.get() < 2.5) {
         roller.setSpeed(Constants.rollerOutputNote);
     }
   }
@@ -51,6 +51,6 @@ public class ShootSpeaker extends Command {
 
   @Override
   public boolean isFinished() {
-    return (time.get() > 3);
+    return (this.time.get() > 3);
   }
 }

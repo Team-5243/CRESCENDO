@@ -27,7 +27,9 @@ public class Drive extends Command {
 
   @Override
   public void execute() {
-    m_driveSubsystem.arcadeDrive(Constants.mainStick.getX(), Constants.mainStick.getY());
+    if (!Constants.mainStick.getRawButton(3)) {
+      m_driveSubsystem.arcadeDrive(Constants.mainStick.getX(), Constants.mainStick.getY());
+    }
   }
 
 

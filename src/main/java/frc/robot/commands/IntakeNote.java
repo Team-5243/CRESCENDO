@@ -17,20 +17,19 @@ public class IntakeNote extends Command {
   public IntakeNote(RollerSubsystem roller) {
     this.roller = roller;
     addRequirements(roller);
-    time = new Timer();
+    this.time = new Timer();
   }
 
 
   @Override
   public void initialize() {
-    time.restart();
+    this.time.restart();
   }
 
 
   @Override
   public void execute() {
-    System.out.print(time.get());
-    if (time.get() < .6 ){
+    if (this.time.get() < 1 ){
         roller.setSpeed(Constants.rollerIntakeNote);
     }
   }
@@ -44,6 +43,6 @@ public class IntakeNote extends Command {
 
   @Override
   public boolean isFinished() {
-    return (time.get() < .6);
+    return (this.time.get() < 1);
   }
 }

@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmToAMP;
 import frc.robot.commands.ArmToGround;
@@ -35,15 +34,15 @@ public class RobotContainer {
 
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
 
-  private final Limelight m_limelightCommand = new Limelight(m_limelightSubsystem, m_driveSubsystem);
+  // private final Limelight m_limelightCommand = new Limelight(m_limelightSubsystem, m_driveSubsystem);
 
-  private final Auton m_autonCommand = new Auton(m_driveSubsystem, m_ArmSubsystem, m_RollerSubsystem, m_ShooterSubsystem);
+  private final Auton m_autonCommand = new Auton(m_driveSubsystem, m_ArmSubsystem, m_RollerSubsystem, m_ShooterSubsystem, m_limelightSubsystem);
   private final PoseEstimation m_poseEstimationCommand = new PoseEstimation(m_driveSubsystem, m_limelightSubsystem);
 
 
   public RobotContainer() {
     m_driveSubsystem.setDefaultCommand(m_driveCommand);
-    m_limelightSubsystem.setDefaultCommand(m_limelightCommand);
+    // m_limelightSubsystem.setDefaultCommand(m_limelightCommand);
     CommandScheduler.getInstance().schedule(m_poseEstimationCommand);
     configureBindings();
   }

@@ -12,7 +12,7 @@ public final class Constants {
   // Intake Settings
   public static double rollerIntakeNote = -0.7;
   public static double rollerOutputNote = 0.6;
-  public static double rollerShootNote = 0.6;
+  public static double rollerShootNote = 0.75;
 
 
   // Outtake NEO Settings

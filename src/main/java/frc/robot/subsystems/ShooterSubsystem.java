@@ -2,7 +2,10 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkRelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
+
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -11,6 +14,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
     CANSparkMax leftMotor;
     CANSparkMax rightMotor;
+
+    SparkRelativeEncoder leftRelativeEncoder;
+    SparkRelativeEncoder rightRelativeEncoder;
+
 
     public ShooterSubsystem() {
 
@@ -37,11 +44,18 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // Set Speeds
     public void setSpeed(double speed){
-        leftMotor.set(-speed);
-        rightMotor.set(speed);
+        leftMotor.set(speed * 1.32);
+        rightMotor.set(-speed);
+    }
+
+    
+    // Get Speed
+    public double getSpeed(){
+        return (Math.abs(leftMotor.getEncoder().getVelocity())+Math.abs(rightMotor.getEncoder().getVelocity()))/2;
     }
     
 
+    // Stop Motors
     public void stop(){
         rightMotor.set(0);
         leftMotor.set(0);

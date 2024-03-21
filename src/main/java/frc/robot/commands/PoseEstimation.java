@@ -14,12 +14,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 
 public class PoseEstimation extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem drive;
-  private final VisionSubsystem vision;
+  private final LimelightSubsystem limelight;
   private Timer time;
 
   public DifferentialDrivePoseEstimator drivePoseEstimator;
@@ -27,10 +27,10 @@ public class PoseEstimation extends Command {
   public Field2d field;
 
 
-  public PoseEstimation(DriveSubsystem drive, VisionSubsystem vision) {
+  public PoseEstimation(DriveSubsystem drive, LimelightSubsystem limelight) {
     this.drive = drive;
-    this.vision = vision;
-    addRequirements(drive, vision);
+    this.limelight = limelight;
+    addRequirements(drive, limelight);
     this.time = new Timer();
   }
 

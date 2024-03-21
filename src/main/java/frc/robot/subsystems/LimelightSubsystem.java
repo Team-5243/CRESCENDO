@@ -130,19 +130,19 @@ public class LimelightSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        NetworkTable table = NetworkTableInstance.getDefault().getTable(Constants.limelight1);
-        NetworkTableEntry tx = table.getEntry("tx");
-        NetworkTableEntry ty = table.getEntry("ty");
-        NetworkTableEntry ta = table.getEntry("ta");
+        // NetworkTable table = NetworkTableInstance.getDefault().getTable(Constants.limelight1);
+        // NetworkTableEntry tx = table.getEntry("tx");
+        // NetworkTableEntry ty = table.getEntry("ty");
+        // NetworkTableEntry ta = table.getEntry("ta");
 
-        //read values periodically
-        double x = tx.getDouble(0.0);
-        double y = ty.getDouble(0.0);
-        double area = ta.getDouble(0.0);
+        // //read values periodically
+        // double x = tx.getDouble(0.0);
+        // double y = ty.getDouble(0.0);
+        // double area = ta.getDouble(0.0);
 
-        //post to smart dashboard periodically
-        SmartDashboard.putNumber("LimelightX", x);
-        SmartDashboard.putNumber("LimelightY", y);
-        SmartDashboard.putNumber("LimelightArea", area);
+        // //post to smart dashboard periodically
+        // SmartDashboard.putNumber("LimelightX", x);
+        // SmartDashboard.putNumber("LimelightY", y);
+        // SmartDashboard.putNumber("LimelightArea", area);
     }
 }

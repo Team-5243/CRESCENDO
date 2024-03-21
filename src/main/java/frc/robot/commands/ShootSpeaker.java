@@ -32,12 +32,9 @@ public class ShootSpeaker extends Command {
 
   @Override
   public void execute() {
-    if (!time.hasElapsed(2)){
-        shooter.setSpeed(Constants.outtakeSpeed);
-    }
-
-    else if (!time.hasElapsed(2.5)) {
-        roller.setSpeed(Constants.rollerOutputNote);
+    shooter.setSpeed(Constants.outtakeSpeed);
+    if (shooter.getSpeed() > Constants.outtakeShootSpeed){
+      roller.setSpeed(Constants.rollerOutputNote);
     }
   }
 
@@ -51,6 +48,6 @@ public class ShootSpeaker extends Command {
 
   @Override
   public boolean isFinished() {
-    return (time.hasElapsed(3));
+    return (time.hasElapsed(1.2));
   }
 }

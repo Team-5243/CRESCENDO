@@ -10,16 +10,17 @@ public final class Constants {
 
 
   // Intake Settings
-  public static double rollerIntakeNote = 0.7;
-  public static double rollerOutputNote = -0.6;
-  public static double rollerShootNote = -0.6;
+  public static double rollerIntakeNote = -0.7;
+  public static double rollerOutputNote = 0.6;
+  public static double rollerShootNote = 0.6;
+
 
   // Outtake NEO Settings
-  public static double outtakeSpeed = -.52;
+  public static double outtakeSpeed = .65;
   
+
   // Intake/Outtake Other
-  public static long waitAfterShoot = 500;
-  public static double armToleranceDisplay = 2.5;
+  public static long outtakeShootSpeed = 2300;
 
 
   // Intake/Outtake CAN
@@ -33,6 +34,7 @@ public final class Constants {
   public static int DriveBoreLeft = 0;
   public static int DriveBoreRight = 2;
   public static int IntakeLimitSwitch = 4;
+
 
   // Arm 
   public static double armSpeed = 0.6;
@@ -59,15 +61,6 @@ public final class Constants {
   public static int FR = 1;
   public static int BL = 3;
   public static int BR = 2;
-
-
-  // Drive PID
-  public static double driveKp = 0;
-  public static double driveKi = 0;
-  public static double driveKd = 0;
-  public static double driveKf = 0;
-  public static double driveMaxV = 0;
-  public static double driveMaxA = 0;
 
 
   // Drive

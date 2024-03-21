@@ -43,6 +43,12 @@ public class DriveSubsystem extends SubsystemBase {
     // Set Break or Coast Mode
     setBreakMode();
 
+    // Set Expiration
+    diffDriveFront.setExpiration(.4);
+    diffDriveBack.setExpiration(.4);
+    diffDriveFront.setSafetyEnabled(false);
+    diffDriveBack.setSafetyEnabled(false);
+
     // Create Objects
     left = new Encoder(Constants.DriveBoreLeft, Constants.DriveBoreLeft+1);
     right = new Encoder(Constants.DriveBoreRight, Constants.DriveBoreRight+1);

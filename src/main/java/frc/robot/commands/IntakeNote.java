@@ -23,13 +23,13 @@ public class IntakeNote extends Command {
 
   @Override
   public void initialize() {
-    this.time.restart();
+    time.restart();
   }
 
 
   @Override
   public void execute() {
-    if (this.time.get() < 1 ){
+    if (!time.hasElapsed(1)){
         roller.setSpeed(Constants.rollerIntakeNote);
     }
   }
@@ -43,6 +43,6 @@ public class IntakeNote extends Command {
 
   @Override
   public boolean isFinished() {
-    return (this.time.get() < 1);
+    return (time.hasElapsed(1));
   }
 }

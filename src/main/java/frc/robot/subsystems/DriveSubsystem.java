@@ -13,7 +13,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -61,8 +60,6 @@ public class DriveSubsystem extends SubsystemBase {
     // Create Objects
     throughBoreInputLeft = new DigitalInput(Constants.DriveBoreLeft);
     throughBoreEncoderLeft = new DutyCycleEncoder(throughBoreInputLeft);
-    // Encoder left = new Encoder(0, 1);
-
     throughBoreInputRight = new DigitalInput(Constants.DriveBoreRight);
     throughBoreEncoderRight = new DutyCycleEncoder(throughBoreInputRight);
 
@@ -77,7 +74,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Create Diff Drive Pose Estimator
     drivePoseEstimator = new DifferentialDrivePoseEstimator(driveKinematics, new Rotation2d(gyro.getAngle()), 
-      getMeters(fl), getMeters(fr), new Pose2d());
+      getMetersLeft(), getMetersRight(), new Pose2d());
 
     field = new Field2d();
     SmartDashboard.putData(field);
@@ -111,6 +108,7 @@ public class DriveSubsystem extends SubsystemBase {
   // Reset Encoders
   public void resetEncoders(){
     throughBoreEncoderRight.reset();
+    throughBoreEncoderLeft.reset();
     fl.resetPosition();
     bl.resetPosition();
     fr.resetPosition();
@@ -125,30 +123,21 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   // Motor Meters Traveled
-  public double getMeters(CANVenom motor){
-    return motor.getPosition() / (Constants.driveWheelCircumference * Constants.driveGearRatio);
-
+  public double getMetersLeft(){
+    return throughBoreEncoderLeft.getAbsolutePosition() / (Constants.driveWheelCircumference);
   }
 
 
-  // Encoders
-  public Double[] getPosition(){
-    return new Double[]{fl.getPosition(), fr.getPosition(), bl.getPosition(), br.getPosition()};
+  public double getMetersRight(){
+    return throughBoreEncoderRight.getDistance() / (Constants.driveWheelCircumference);
   }
 
-  public Double[] getSpeed(){
-    return new Double[]{fl.getSpeed(), fr.getSpeed(), bl.getSpeed(), br.getSpeed()};
-  }
-
-  public Double[] getTemperature(){
-    return new Double[]{fl.getTemperature(), fr.getTemperature(), bl.getTemperature(), br.getTemperature()};
-  }
 
 
   @Override
   public void periodic() {
     // Pose Estimation
-    drivePoseEstimator.update(new Rotation2d(gyro.getAngle()), getMeters(fl), getMeters(fr));
+    drivePoseEstimator.update(new Rotation2d(gyro.getAngle()), getMetersLeft(), getMetersRight());
     // drivePoseEstimator.addVisionMeasurement(null, 0);
     field.setRobotPose(drivePoseEstimator.getEstimatedPosition());
 

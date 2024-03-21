@@ -23,26 +23,26 @@ public class ShootAMP extends Command {
 
   @Override
   public void initialize() {
-    this.time.restart();
+    time.restart();
   }
 
 
   @Override
   public void execute() {
-    if (this.time.get() < .6){
-        roller.setSpeed(Constants.rollerShootNote);
+    if (!time.hasElapsed(.6)){
+      roller.setSpeed(Constants.rollerShootNote);
     }
   }
 
 
   @Override
   public void end(boolean interrupted) {
-      roller.stop();
+    roller.stop();
   }
 
 
   @Override
   public boolean isFinished() {
-    return (this.time.get() > .6);
+    return (time.hasElapsed(.6));
   }
 }

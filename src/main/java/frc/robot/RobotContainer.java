@@ -49,7 +49,7 @@ public class RobotContainer {
         .onTrue(new IntakeNote(m_RollerSubsystem));
 
     new JoystickButton(Constants.secondStick, 1)
-        .onTrue(new ShootSpeaker(m_RollerSubsystem, m_ShooterSubsystem));
+        .whileTrue(new ShootSpeaker(m_RollerSubsystem, m_ShooterSubsystem));
 
     new JoystickButton(Constants.secondStick, 5)
         .whileTrue(new ArmToGround(m_ArmSubsystem));

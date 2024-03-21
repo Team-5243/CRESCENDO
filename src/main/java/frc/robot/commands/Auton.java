@@ -19,7 +19,7 @@ public class Auton extends Command {
   public ArmSubsystem arm;
   public ShooterSubsystem shooter;
   public DriveSubsystem drive;
-  private Timer autoTime = new Timer();
+  private Timer time;
 
 
   public Auton(DriveSubsystem drive, ArmSubsystem arm, RollerSubsystem roller, ShooterSubsystem shooter) {
@@ -28,37 +28,36 @@ public class Auton extends Command {
     this.roller = roller;
     this.shooter = shooter;
     addRequirements(drive, arm, roller, shooter);
+    time = new Timer();
+    time.restart();
   }
 
   @Override
   public void initialize() {
-    this.autoTime.restart();
+    time.restart();
   }
 
   @Override
   public void execute() {
-    SmartDashboard.putNumber("timer", this.autoTime.get());
-    if (this.autoTime.get() < 2){
+    SmartDashboard.putNumber("auton timer", time.get());
+    SmartDashboard.putNumber("fpga time", Timer.getFPGATimestamp());
+    if (!time.hasElapsed(2)){
       shooter.setSpeed(Constants.outtakeSpeed);
     }
 
-    else if (this.autoTime.get() < 3.5) {
+    else if (!time.hasElapsed(3)) {
       roller.setSpeed(Constants.rollerOutputNote);
-    }
-
-    else {
-      roller.stop();
-      shooter.stop();
     }
   }
 
   @Override
   public void end(boolean interrupted) {
-
+    roller.stop();
+    shooter.stop();
   }
 
   @Override
   public boolean isFinished() {
-    return false;
+    return time.hasElapsed(3.2);
   }
 } 

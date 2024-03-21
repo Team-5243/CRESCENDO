@@ -7,14 +7,8 @@ package frc.robot.subsystems;
 import com.playingwithfusion.CANVenom;
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;   
@@ -30,16 +24,8 @@ public class DriveSubsystem extends SubsystemBase {
   public DifferentialDrive diffDriveFront;
   public DifferentialDrive diffDriveBack;
   public AHRS gyro;
-  
-  DigitalInput throughBoreInputRight;
-  DutyCycleEncoder throughBoreEncoderRight;
-
-  DigitalInput throughBoreInputLeft;
-  DutyCycleEncoder throughBoreEncoderLeft;
-
-  public DifferentialDrivePoseEstimator drivePoseEstimator;
-  public DifferentialDriveKinematics driveKinematics;
-  public Field2d field;
+  Encoder left;
+  Encoder right;
 
 
   public DriveSubsystem() {
@@ -58,27 +44,14 @@ public class DriveSubsystem extends SubsystemBase {
     setBreakMode();
 
     // Create Objects
-    throughBoreInputLeft = new DigitalInput(Constants.DriveBoreLeft);
-    throughBoreEncoderLeft = new DutyCycleEncoder(throughBoreInputLeft);
-    throughBoreInputRight = new DigitalInput(Constants.DriveBoreRight);
-    throughBoreEncoderRight = new DutyCycleEncoder(throughBoreInputRight);
+    left = new Encoder(Constants.DriveBoreLeft, Constants.DriveBoreLeft+1);
+    right = new Encoder(Constants.DriveBoreRight, Constants.DriveBoreRight+1);
 
     // Resets
     resetEncoders();
 
     // Create Gyro
     gyro = new AHRS();
-
-    // Create Drive Kinematics
-    driveKinematics = new DifferentialDriveKinematics(Constants.driveTrackWidth);
-
-    // Create Diff Drive Pose Estimator
-    drivePoseEstimator = new DifferentialDrivePoseEstimator(driveKinematics, new Rotation2d(gyro.getAngle()), 
-      getMetersLeft(), getMetersRight(), new Pose2d());
-
-    field = new Field2d();
-    SmartDashboard.putData(field);
-
   }
 
 
@@ -107,8 +80,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Reset Encoders
   public void resetEncoders(){
-    throughBoreEncoderRight.reset();
-    throughBoreEncoderLeft.reset();
+    right.reset();
+    left.reset();
     fl.resetPosition();
     bl.resetPosition();
     fr.resetPosition();
@@ -124,25 +97,17 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Motor Meters Traveled
   public double getMetersLeft(){
-    return throughBoreEncoderLeft.getAbsolutePosition() / (Constants.driveWheelCircumference);
+    return left.get() * (Constants.driveWheelCircumference);
   }
-
 
   public double getMetersRight(){
-    return throughBoreEncoderRight.getDistance() / (Constants.driveWheelCircumference);
+    return right.get() * (Constants.driveWheelCircumference);
   }
-
 
 
   @Override
   public void periodic() {
-    // Pose Estimation
-    drivePoseEstimator.update(new Rotation2d(gyro.getAngle()), getMetersLeft(), getMetersRight());
-    // drivePoseEstimator.addVisionMeasurement(null, 0);
-    field.setRobotPose(drivePoseEstimator.getEstimatedPosition());
-
-    SmartDashboard.putNumber("Left", throughBoreEncoderLeft.get());
-    SmartDashboard.putNumber("Right", throughBoreEncoderRight.get());
-
+    SmartDashboard.putNumber("Left", left.get());
+    SmartDashboard.putNumber("Right", right.get());
   };
 }

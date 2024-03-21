@@ -5,8 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ArmToAMP;
 import frc.robot.commands.ArmToGround;
 import frc.robot.commands.ArmToShooter;
@@ -14,6 +14,7 @@ import frc.robot.commands.Auton;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.Limelight;
+import frc.robot.commands.PoseEstimation;
 import frc.robot.commands.ShootAMP;
 import frc.robot.commands.ShootSpeaker;
 import frc.robot.subsystems.ArmSubsystem;
@@ -21,6 +22,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 
 public class RobotContainer {
@@ -31,15 +33,19 @@ public class RobotContainer {
   private final RollerSubsystem m_RollerSubsystem = new RollerSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
 
-  private final LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
-  private final Limelight m_Limelight = new Limelight(m_LimelightSubsystem, m_driveSubsystem);
+  private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
+
+  private final VisionSubsystem m_visionSubsystem = new VisionSubsystem();
+  private final Limelight m_limelight = new Limelight(m_limelightSubsystem, m_driveSubsystem);
 
   private final Auton m_autonCommand = new Auton(m_driveSubsystem, m_ArmSubsystem, m_RollerSubsystem, m_ShooterSubsystem);
+  private final PoseEstimation m_poseEstimation = new PoseEstimation(m_driveSubsystem, m_visionSubsystem);
 
 
   public RobotContainer() {
-    m_driveSubsystem.setDefaultCommand(m_driveCommand);
-    m_LimelightSubsystem.setDefaultCommand(m_Limelight);
+    m_driveSubsystem.setDefaultCommand(m_poseEstimation);
+    m_limelightSubsystem.setDefaultCommand(m_limelight);
+
     configureBindings();
   }
 

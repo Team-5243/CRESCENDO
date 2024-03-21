@@ -14,12 +14,13 @@ public class ShootSpeaker extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final RollerSubsystem roller;
   private final ShooterSubsystem shooter;
-  private Timer time = new Timer();
+  private Timer time;
 
   public ShootSpeaker(RollerSubsystem roller, ShooterSubsystem shooter) {
     this.roller = roller;
     this.shooter = shooter;
     addRequirements(roller, shooter);
+    time = new Timer();
   }
 
 
@@ -38,16 +39,14 @@ public class ShootSpeaker extends Command {
     else if (time.get() < 2.5) {
         roller.setSpeed(Constants.rollerOutputNote);
     }
-
-    else if (time.get() > 3) {
-        roller.stop();
-        shooter.stop();
-    }
   }
 
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+      roller.stop();
+      shooter.stop();
+  }
 
 
   @Override

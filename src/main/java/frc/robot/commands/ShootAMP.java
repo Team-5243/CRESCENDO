@@ -28,21 +28,20 @@ public class ShootAMP extends Command {
 
   @Override
   public void execute() {
-    if (time.get() < .7){
+    if (time.get() < .6){
         roller.setSpeed(Constants.rollerShootNote);
-    }
-    else {
-        roller.stop();
     }
   }
 
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+      roller.stop();
+  }
 
 
   @Override
   public boolean isFinished() {
-    return (time.get() > .7);
+    return (time.get() > .6);
   }
 }

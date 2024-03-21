@@ -12,11 +12,12 @@ import frc.robot.subsystems.RollerSubsystem;
 public class IntakeNote extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final RollerSubsystem roller;
-  private Timer time = new Timer();
+  private Timer time;
 
   public IntakeNote(RollerSubsystem roller) {
     this.roller = roller;
     addRequirements(roller);
+    time = new Timer();
   }
 
 
@@ -28,21 +29,21 @@ public class IntakeNote extends Command {
 
   @Override
   public void execute() {
-    if (time.get() < 3 ){
+    System.out.print(time.get());
+    if (time.get() < .6 ){
         roller.setSpeed(Constants.rollerIntakeNote);
-    }
-    else {
-        roller.stop();
     }
   }
 
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    roller.stop();
+  }
 
 
   @Override
   public boolean isFinished() {
-    return (time.get() < 3);
+    return (time.get() < .6);
   }
 }

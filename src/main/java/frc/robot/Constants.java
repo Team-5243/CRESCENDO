@@ -15,7 +15,7 @@ public final class Constants {
   public static double rollerShootNote = 0.6;
 
   // Outtake NEO Settings
-  public static double outtakeSpeed = .52;
+  public static double outtakeSpeed = -.52;
   
   // Intake/Outtake Other
   public static long waitAfterShoot = 500;
@@ -30,8 +30,8 @@ public final class Constants {
 
 
   // Intake/Outtake DIO
-  public static int OuttakeBore = 0;
-  public static int ArmBore = 2;
+  public static int DriveBoreLeft = 0;
+  public static int DriveBoreRight = 2;
   public static int IntakeLimitSwitch = 4;
 
   // Arm 

@@ -37,8 +37,11 @@ public class Limelight extends Command {
         } //else {
         // table.getEntry("ledMode").setNumber(0);
     //   }
-        if (Constants.mainStick.getRawButton(5)) {
-            m_limelightSubsystem.alignWithAmp(table);
+        else if (Constants.mainStick.getRawButton(5)) {
+            // m_limelightSubsystem.alignWithAmp(table);
+        }
+        else {
+
         }
         m_driveSubsystem.arcadeDrive(m_limelightSubsystem.xSpeed, m_limelightSubsystem.forwardSpeed);
 

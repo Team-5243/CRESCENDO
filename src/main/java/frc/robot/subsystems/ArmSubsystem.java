@@ -16,38 +16,34 @@ public class ArmSubsystem extends SubsystemBase {
     RelativeEncoder encoder;
     SparkPIDController armPIDController;
 
-    DigitalInput throughBoreInputArm;
-    DutyCycleEncoder throughBoreEncoder;
-
     public ArmSubsystem() {
 
-        // Create Objects
-        motor = new CANSparkMax(Constants.IntakeMotorArm, MotorType.kBrushless);
-        encoder = motor.getEncoder();
-        throughBoreInputArm = new DigitalInput(Constants.ArmBore);
-        throughBoreEncoder = new DutyCycleEncoder(throughBoreInputArm);
+      // Create Objects
+      motor = new CANSparkMax(Constants.IntakeMotorArm, MotorType.kBrushless);
+      encoder = motor.getEncoder();
 
-        // Resets
-        resetEncoders();
-        resetMotors();
+      // Resets
+      resetEncoders();
+      resetMotors();
+
+      // Set PID
+      setArmPID();
 
     }
 
 
     // Resets
     public void resetEncoders(){
-      throughBoreEncoder.reset();
       encoder.setPosition(0);
     }
 
     public void resetMotors(){
-        motor.clearFaults();
+      motor.clearFaults();
     }
 
 
     // PID Tuning for Arm
     public void setArmPID(){
-      encoder.setPosition(0);
       armPIDController= motor.getPIDController();
       armPIDController.setP(Constants.armKp);
       armPIDController.setI(Constants.armKi);
@@ -59,7 +55,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     // Accessor Methods
     public double getSpeed(){
-        return motor.get();
+      return motor.get();
     }
 
 
@@ -67,21 +63,6 @@ public class ArmSubsystem extends SubsystemBase {
     public void setPosition(double position){
       armPIDController.setReference(position, CANSparkMax.ControlType.kPosition);
     }
-
-
-    // Conditionals
-    // public boolean atAMP(){
-    //   return (Math.abs(Constants.armAMPPosition-encoder.getPosition()) < Constants.armToleranceDisplay);
-    // }
-
-    // public boolean atOuttake(){
-    //   return (Math.abs(Constants.armOuttakePosition-encoder.getPosition()) < Constants.armToleranceDisplay);
-    // }
-
-    // public boolean atIntake(){
-    //   return (Math.abs(Constants.armIntakePosition-encoder.getPosition()) < Constants.armToleranceDisplay);
-    // }
-
 
     @Override
     public void periodic() {

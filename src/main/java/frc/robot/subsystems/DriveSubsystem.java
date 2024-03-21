@@ -11,6 +11,9 @@ import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,6 +32,12 @@ public class DriveSubsystem extends SubsystemBase {
   public DifferentialDrive diffDriveBack;
   public AHRS gyro;
   
+  DigitalInput throughBoreInputRight;
+  DutyCycleEncoder throughBoreEncoderRight;
+
+  DigitalInput throughBoreInputLeft;
+  DutyCycleEncoder throughBoreEncoderLeft;
+
   public DifferentialDrivePoseEstimator drivePoseEstimator;
   public DifferentialDriveKinematics driveKinematics;
   public Field2d field;
@@ -48,6 +57,14 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Set Break or Coast Mode
     setBreakMode();
+
+    // Create Objects
+    throughBoreInputLeft = new DigitalInput(Constants.DriveBoreLeft);
+    throughBoreEncoderLeft = new DutyCycleEncoder(throughBoreInputLeft);
+    // Encoder left = new Encoder(0, 1);
+
+    throughBoreInputRight = new DigitalInput(Constants.DriveBoreRight);
+    throughBoreEncoderRight = new DutyCycleEncoder(throughBoreInputRight);
 
     // Resets
     resetEncoders();
@@ -93,6 +110,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Reset Encoders
   public void resetEncoders(){
+    throughBoreEncoderRight.reset();
     fl.resetPosition();
     bl.resetPosition();
     fr.resetPosition();
@@ -134,11 +152,8 @@ public class DriveSubsystem extends SubsystemBase {
     // drivePoseEstimator.addVisionMeasurement(null, 0);
     field.setRobotPose(drivePoseEstimator.getEstimatedPosition());
 
-    SmartDashboard.putNumber("FL", fl.getSpeed());
-    SmartDashboard.putNumber("FR", fr.getSpeed());
-    SmartDashboard.putNumber("BL", bl.getSpeed());
-    SmartDashboard.putNumber("BR", br.getSpeed());
-
+    SmartDashboard.putNumber("Left", throughBoreEncoderLeft.get());
+    SmartDashboard.putNumber("Right", throughBoreEncoderRight.get());
 
   };
 }

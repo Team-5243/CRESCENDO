@@ -40,14 +40,7 @@ public class ShooterSubsystem extends SubsystemBase {
         leftMotor.set(-speed);
         rightMotor.set(speed);
     }
-
-    public void setLeftSpeed(double speed){
-        leftMotor.set(-speed);
-    }
-
-    public void setRightSpeed(double speed){
-        rightMotor.set(speed);
-    }
+    
 
     public void stop(){
         rightMotor.set(0);

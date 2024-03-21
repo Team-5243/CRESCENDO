@@ -41,10 +41,10 @@ public class RobotContainer {
 
   private void configureBindings() {
     
-    new JoystickButton(Constants.secondStick, 1)
+    new JoystickButton(Constants.secondStick, 2)
         .whileTrue(new IntakeNote(m_RollerSubsystem));
 
-    new JoystickButton(Constants.secondStick, 0)
+    new JoystickButton(Constants.secondStick, 1)
         .whileTrue(new ShootSpeaker(m_RollerSubsystem, m_ShooterSubsystem));
 
     new JoystickButton(Constants.secondStick, 5)

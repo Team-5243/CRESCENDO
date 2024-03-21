@@ -58,7 +58,7 @@ public class Auton extends Command {
 
       new ParallelCommandGroup(
         new ArmToGround(arm),
-        new DriveToNote(drive)),
+        new DriveToNote(drive, 5)),
       new IntakeNote(roller),
       new ParallelCommandGroup(
         new ArmToShooter(arm),

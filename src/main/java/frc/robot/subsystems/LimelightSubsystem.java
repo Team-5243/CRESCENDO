@@ -66,33 +66,33 @@ public class LimelightSubsystem extends SubsystemBase {
         return false;
     }
 
-    /**
-     * This will turn the robot towards the amp.
-     * @param table the network table of limelight two. Limelight one is the front limelight.
-     * @return Return true if there is a change in speed variables otherwise it will return false.
-     */
-    public boolean alignWithAmp(NetworkTable table) {
-        double tx = table.getEntry("tx").getDouble(0.0);
-        double val = tx / Constants.dRVP;
-        double results = 0;
-        if (LimelightHelpers.getLatestResults(Constants.limelight2).targetingResults.targets_Fiducials.length > 0)
-          results = LimelightHelpers.getLatestResults(Constants.limelight2).targetingResults.targets_Fiducials[0].fiducialID;
+    // /**
+    //  * This will turn the robot towards the amp.
+    //  * @param table the network table of limelight two. Limelight one is the front limelight.
+    //  * @return Return true if there is a change in speed variables otherwise it will return false.
+    //  */
+    // public boolean alignWithAmp(NetworkTable table) {
+    //     double tx = table.getEntry("tx").getDouble(0.0);
+    //     double val = tx / Constants.dRVP;
+    //     double results = 0;
+    //     if (LimelightHelpers.getLatestResults(Constants.limelight2).targetingResults.targets_Fiducials.length > 0)
+    //       results = LimelightHelpers.getLatestResults(Constants.limelight2).targetingResults.targets_Fiducials[0].fiducialID;
         
-        if (Math.abs(tx) > Constants.limelightTolerance) {
-          if (Math.abs(val) > Constants.maxRVP) {
-            val = Math.signum(val) * Constants.maxRVP;
-          }
-          if (Math.abs(val) < Constants.minRVP) {
-            val = Math.signum(val) * Constants.minRVP;
-          }
-          if (results == Constants.redAmpID || results == Constants.blueAmpID)
-          {
-            this.xSpeed = val;
-            return true;
-          }
-        }
-        return false;
-    }
+    //     if (Math.abs(tx) > Constants.limelightTolerance) {
+    //       if (Math.abs(val) > Constants.maxRVP) {
+    //         val = Math.signum(val) * Constants.maxRVP;
+    //       }
+    //       if (Math.abs(val) < Constants.minRVP) {
+    //         val = Math.signum(val) * Constants.minRVP;
+    //       }
+    //       if (results == Constants.redAmpID || results == Constants.blueAmpID)
+    //       {
+    //         this.xSpeed = val;
+    //         return true;
+    //       }
+    //     }
+    //     return false;
+    // }
 
     /**
      * Will set a limelights LEDs to a specified state

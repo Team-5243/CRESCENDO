@@ -12,15 +12,18 @@ import frc.robot.subsystems.DriveSubsystem;
 public class DriveToNote extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
+  private double distance;
 
-  public DriveToNote(DriveSubsystem drive) {
+  public DriveToNote(DriveSubsystem drive, double distance) {
     m_driveSubsystem = drive;
+    this.distance = distance;
     addRequirements(drive);
   }
 
 
   @Override
   public void initialize() {
+    double left = drive
 
   }
 

@@ -35,10 +35,15 @@ public class DriveToSpeaker extends Command {
   public void execute() {
     m_limelightSubsystem.resetSpeeds();
     m_limelightSubsystem.alignWithSpeaker(NetworkTableInstance.getDefault().getTable(Constants.limelight1));
-    checkForward = m_limelightSubsystem.forwardSpeed;
-    checkTurn = m_limelightSubsystem.xSpeed;
-    m_driveSubsystem.arcadeDrive(m_limelightSubsystem.xSpeed, m_limelightSubsystem.forwardSpeed);
+    if (!m_limelightSubsystem.start) {
+        checkForward = m_limelightSubsystem.forwardSpeed;
+        checkTurn = m_limelightSubsystem.xSpeed;
+        m_driveSubsystem.arcadeDrive(m_limelightSubsystem.xSpeed, m_limelightSubsystem.forwardSpeed);
+    } else {
+        m_driveSubsystem.arcadeDrive(0, -0.5);
+    }
   }
+
 
 
   @Override
@@ -49,6 +54,6 @@ public class DriveToSpeaker extends Command {
 
   @Override
   public boolean isFinished() {
-    return checkTurn == 0 && checkForward == 0;
+    return checkTurn == 0 && checkForward == 0 && !m_limelightSubsystem.start && m_limelightSubsystem.end;
   }
 }

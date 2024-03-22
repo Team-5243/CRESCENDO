@@ -15,6 +15,8 @@ public class LimelightSubsystem extends SubsystemBase {
     public double xSpeed;
     public double forwardSpeed;
     public boolean visionMode;
+    public boolean start = true;
+    public boolean end = false;
 
     public LimelightSubsystem() {
       ty = 0;
@@ -43,9 +45,10 @@ public class LimelightSubsystem extends SubsystemBase {
         double val = tx / Constants.dRVP;
         double results = 0;
         LimelightResults latestResult = LimelightHelpers.getLatestResults(Constants.limelight1);
-        if (latestResult.targetingResults.targets_Fiducials.length > 0)
+        if (latestResult.targetingResults.targets_Fiducials.length > 0) {
           results = latestResult.targetingResults.targets_Fiducials[0].fiducialID;
-        
+          start = false;
+        }
         if (Math.abs(tx) > Constants.limelightTolerance) {
           if (Math.abs(val) > Constants.maxRVP) {
             val = Math.signum(val) * Constants.maxRVP;
@@ -59,6 +62,9 @@ public class LimelightSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("id", results);
         if (results == Constants.redSpeakerID || results == Constants.blueSpeakerID) {
         //   m_driveSubsystem.diffDrive.arcadeDrive(s 
+            if (( Constants.maxSpeakerTY > ty && ty > Constants.minSpeakerTY)) {
+              end = true;
+            }
             this.xSpeed = val; // Math.max(0.25, Math.min(SmartDashboard.getNumber("maxRVP", 0.0), tx / SmartDashboard.getNumber("dRVP", 1))),
             this.forwardSpeed = Constants.maxSpeakerTY > ty && ty > Constants.minSpeakerTY ? 0 : Math.signum(Constants.minSpeakerTY - ty) * 0.7;
             System.out.println(xSpeed);

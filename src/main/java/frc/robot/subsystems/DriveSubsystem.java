@@ -111,7 +111,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Left", left.get());
-    SmartDashboard.putNumber("Right", right.get());
+    SmartDashboard.putNumber("Left", getMetersLeft());
+    SmartDashboard.putNumber("Right", getMetersRight());
   };
 }

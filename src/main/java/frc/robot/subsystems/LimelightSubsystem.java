@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.util.LimelightHelpers;
+import frc.robot.util.LimelightHelpers.LimelightResults;
 
 public class LimelightSubsystem extends SubsystemBase {
     
@@ -41,8 +42,9 @@ public class LimelightSubsystem extends SubsystemBase {
         double ty = table.getEntry("ty").getDouble(0.0);
         double val = tx / Constants.dRVP;
         double results = 0;
-        if (LimelightHelpers.getLatestResults(Constants.limelight1).targetingResults.targets_Fiducials.length > 0)
-          results = LimelightHelpers.getLatestResults(Constants.limelight1).targetingResults.targets_Fiducials[0].fiducialID;
+        LimelightResults latestResult = LimelightHelpers.getLatestResults(Constants.limelight1);
+        if (latestResult.targetingResults.targets_Fiducials.length > 0)
+          results = latestResult.targetingResults.targets_Fiducials[0].fiducialID;
         
         if (Math.abs(tx) > Constants.limelightTolerance) {
           if (Math.abs(val) > Constants.maxRVP) {

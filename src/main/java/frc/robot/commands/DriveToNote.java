@@ -17,10 +17,12 @@ public class DriveToNote extends Command {
   private double distance;
   private double left;
   private double right;
+  private boolean intake;
 
-  public DriveToNote(DriveSubsystem drive, RollerSubsystem roller, double distance) {
+  public DriveToNote(DriveSubsystem drive, RollerSubsystem roller, double distance, boolean intake) {
     this.drive = drive;
     this.roller = roller;
+    this.intake = intake;
     this.distance = distance;
     addRequirements(drive);
   }
@@ -36,7 +38,9 @@ public class DriveToNote extends Command {
 
   @Override
   public void execute() {
-    roller.setSpeed(Constants.rollerIntakeNote);
+    if (intake) {
+        roller.setSpeed(Constants.rollerIntakeNote);
+    }
     drive.arcadeDrive(0, -0.5);
   }
 

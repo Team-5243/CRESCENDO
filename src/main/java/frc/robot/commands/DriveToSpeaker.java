@@ -27,7 +27,7 @@ public class DriveToSpeaker extends Command {
 
   @Override
   public void initialize() {
-    
+    m_limelightSubsystem.setLedMode(Constants.limelight1, "on");
   }
 
 
@@ -42,7 +42,9 @@ public class DriveToSpeaker extends Command {
 
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_limelightSubsystem.setLedMode(Constants.limelight1, "off");
+  }
 
 
   @Override

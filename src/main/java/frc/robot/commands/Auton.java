@@ -46,6 +46,7 @@ public class Auton extends Command {
   public void execute() {
     new SequentialCommandGroup(
       // Shoot
+      new ArmToShooter(arm),
       new ShootSpeaker(roller, shooter),
 
       // Arm to Floor
@@ -58,11 +59,11 @@ public class Auton extends Command {
 
       new ParallelCommandGroup(
         new ArmToGround(arm),
-        new DriveToNote(drive, roller, 8)),
+        new DriveToNote(drive, roller, 8, true)),
       new ParallelCommandGroup(
         new ArmToShooter(arm),
         new DriveToSpeaker(drive, limelight)),
-      new ShootSpeaker(roller, shooter)
+      new ShootSpeaker(roller, shooter),
 
       // Arm to Floor
       // Turn 30* to Align with Note
@@ -73,6 +74,16 @@ public class Auton extends Command {
       // Align With Speaker
       // Shoot
 
+      new ParallelCommandGroup(
+        new ArmToGround(arm),
+        new DriveToNote(drive, roller, 8, false)),
+        new TurnToHeading(drive, -90),
+        new DriveToNote(drive, roller, 7, true),
+        new TurnToHeading(drive, 55),
+        new ParallelCommandGroup(
+          new DriveToSpeaker(drive, limelight),
+          new ArmToShooter(arm)),
+        new ShootSpeaker(roller, shooter)
       ).schedule();
 
   }

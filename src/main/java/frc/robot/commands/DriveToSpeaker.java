@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -14,6 +15,8 @@ public class DriveToSpeaker extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
   private final LimelightSubsystem m_limelightSubsystem;
+  private double checkTurn = 1;
+  private double checkForward = 1;
 
   public DriveToSpeaker(DriveSubsystem drive, LimelightSubsystem limelight) {
     m_driveSubsystem = drive;
@@ -24,13 +27,17 @@ public class DriveToSpeaker extends Command {
 
   @Override
   public void initialize() {
-
+    
   }
 
 
   @Override
   public void execute() {
-    m_driveSubsystem.arcadeDrive(Constants.mainStick.getX(), Constants.mainStick.getY());
+    m_limelightSubsystem.resetSpeeds();
+    m_limelightSubsystem.alignWithSpeaker(NetworkTableInstance.getDefault().getTable(Constants.limelight1));
+    checkForward = m_limelightSubsystem.forwardSpeed;
+    checkTurn = m_limelightSubsystem.xSpeed;
+    m_driveSubsystem.arcadeDrive(m_limelightSubsystem.xSpeed, m_limelightSubsystem.forwardSpeed);
   }
 
 
@@ -40,6 +47,6 @@ public class DriveToSpeaker extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return checkTurn == 0 && checkForward == 0;
   }
 }

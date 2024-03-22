@@ -58,8 +58,7 @@ public class Auton extends Command {
 
       new ParallelCommandGroup(
         new ArmToGround(arm),
-        new DriveToNote(drive, 5)),
-      new IntakeNote(roller),
+        new DriveToNote(drive, roller, 8)),
       new ParallelCommandGroup(
         new ArmToShooter(arm),
         new DriveToSpeaker(drive, limelight)),
@@ -74,18 +73,17 @@ public class Auton extends Command {
       // Align With Speaker
       // Shoot
 
-      );
+      ).schedule();
 
   }
 
   @Override
   public void end(boolean interrupted) {
-    roller.stop();
-    shooter.stop();
+
   }
 
   @Override
   public boolean isFinished() {
-    return time.hasElapsed(3.2);
+    return false;
   }
 } 

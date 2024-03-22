@@ -34,7 +34,7 @@ public class RobotContainer {
 
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
 
-  // private final Limelight m_limelightCommand = new Limelight(m_limelightSubsystem, m_driveSubsystem);
+  private final Limelight m_limelightCommand = new Limelight(m_limelightSubsystem);
 
   private final Auton m_autonCommand = new Auton(m_driveSubsystem, m_ArmSubsystem, m_RollerSubsystem, m_ShooterSubsystem, m_limelightSubsystem);
   private final PoseEstimation m_poseEstimationCommand = new PoseEstimation(m_driveSubsystem, m_limelightSubsystem);
@@ -42,7 +42,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     m_driveSubsystem.setDefaultCommand(m_driveCommand);
-    // m_limelightSubsystem.setDefaultCommand(m_limelightCommand);
+    m_limelightSubsystem.setDefaultCommand(m_limelightCommand);
     CommandScheduler.getInstance().schedule(m_poseEstimationCommand);
     configureBindings();
   }

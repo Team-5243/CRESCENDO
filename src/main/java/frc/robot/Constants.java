@@ -80,8 +80,8 @@ public final class Constants {
   public static final double minRVP = 0.5;
   public static final double dRVP = 50;
   public static final double limelightTolerance = 2;
-  public static final double maxSpeakerTY = -9.5;
-  public static final double minSpeakerTY = -10.5;
+  public static final double maxSpeakerTY = 19;
+  public static final double minSpeakerTY = 17;
   public static final String limelight1 = "limelight";
   public static final String limelight2 = "limelight-two";
   public static final int redSpeakerID = 4;

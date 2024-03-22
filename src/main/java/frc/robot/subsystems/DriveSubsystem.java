@@ -43,6 +43,9 @@ public class DriveSubsystem extends SubsystemBase {
     // Set Break or Coast Mode
     setBreakMode();
     
+    // Make it Unsafe
+    diffDriveFront.setSafetyEnabled(false);
+    diffDriveBack.setSafetyEnabled(false);
 
     // Create Objects
     left = new Encoder(Constants.DriveBoreLeft, Constants.DriveBoreLeft+1);
@@ -98,11 +101,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Motor Meters Traveled
   public double getMetersLeft(){
-    return left.get() * (Constants.driveWheelCircumference);
+    return (Math.abs(left.get())/4096) * (Constants.driveWheelCircumference);
   }
 
   public double getMetersRight(){
-    return right.get() * (Constants.driveWheelCircumference);
+    return (Math.abs(right.get())/4096) * (Constants.driveWheelCircumference);
   }
 
 

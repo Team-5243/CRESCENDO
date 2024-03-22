@@ -36,6 +36,6 @@ public class ArmToAMP extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

@@ -7,15 +7,20 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.RollerSubsystem;
 
 
 public class DriveToNote extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final DriveSubsystem m_driveSubsystem;
+  private final DriveSubsystem drive;
+  private final RollerSubsystem roller;
   private double distance;
+  private double left;
+  private double right;
 
-  public DriveToNote(DriveSubsystem drive, double distance) {
-    m_driveSubsystem = drive;
+  public DriveToNote(DriveSubsystem drive, RollerSubsystem roller, double distance) {
+    this.drive = drive;
+    this.roller = roller;
     this.distance = distance;
     addRequirements(drive);
   }
@@ -23,23 +28,27 @@ public class DriveToNote extends Command {
 
   @Override
   public void initialize() {
-    double left = drive
-
+    drive.resetEncoders();
+    left = drive.getMetersLeft();
+    right = drive.getMetersRight();
   }
 
 
   @Override
   public void execute() {
-    m_driveSubsystem.arcadeDrive(Constants.mainStick.getX(), Constants.mainStick.getY());
+    roller.setSpeed(Constants.rollerIntakeNote);
+    drive.arcadeDrive(0, -0.5);
   }
 
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    roller.stop();
+  }
 
 
   @Override
   public boolean isFinished() {
-    return false;
+    return (drive.getMetersLeft() > left + (distance*0.0254)) || (drive.getMetersRight() > right + (distance*0.0254));
   }
 }
